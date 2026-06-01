@@ -1,106 +1,36 @@
 # The Readout Regime: A Normal Form for Final-Residual Control of Frozen Transformers — and Its Capacity Limits
 
-**Nathan Lee Peterson**
-Independent researcher · Correspondence: orbitnate@gmail.com
+**Nathan Lee Peterson**  
+Independent researcher · Correspondence: orbitnate@gmail.com  
 Code and result artifacts: https://github.com/orbitnate/readout-regime
 
 ---
 
 ## Abstract
 
-Inference-time interventions on a frozen transformer — steering behavior, injecting facts,
-suppressing outputs — are not interchangeable: *where* an additive intervention acts splits them into
-two regimes of sharply different expressive power, and we give the exact theory of one. An
-intervention that writes into the **final residual stream** (the unembedding/readout space; installing
-a scaled row of the output-projection matrix `lm_head` is the exactly-characterizable case) induces on
-the next-token logits, for every input, the transform `z ↦ s(x)·z + c(x)`: a ranking-preserving scalar
-temperature `s(x) > 0` plus a re-ranking bias `c(x)` **confined to a fixed, low-dimensional set of
-directions chosen before any input is seen** (T1; verified against direct forward-pass computation to
-≈5×10⁻⁶). The result that matters is a *structure* theorem (T2): the input selects only a *point* in
-that fixed set and a temperature, so the reachable re-ranking directions, over all inputs, have affine
-dimension at most the installed-slot count. **In plain terms: a readout install can re-weight and
-re-rank the options the model already has, but cannot synthesize a new answer direction or compute a
-hidden routing variable the addressing query does not already expose.** We prove the readout regime's
-confinement and *cite* — not prove — evidence that the representation regime is not so confined; that
-direct measurement is the main open item. The corollaries, carefully bounded: a bounded readout
-install is **not a hard override** of a peaked prior, can only **tip** a decision the context has
-already scaffolded near-balanced, and **cannot compute** a hidden intermediate. Capacity has two
-faces, both empirical: across **key-disjoint** decisions installs compose bit-exactly at scale (tens
-of modules, thousands of facts, `Δ=0`); **within one** decision the readout is winner-take-all (≈2
-targets co-winnable, against an output projection of entropy-effective rank ≈918). The control reading: *tip* a propensity in
-the readout regime — it is auditable, a removable bias — but place any hard guarantee in a
-deterministic override outside the model. The contribution is the boundary, stated precisely.
+Inference-time interventions on a frozen transformer — steering behavior, injecting facts, suppressing outputs — are not interchangeable: *where* an additive intervention acts splits them into two regimes of sharply different expressive power, and we give the exact theory of one. An intervention that writes into the **final residual stream** (the unembedding/readout space; installing a scaled row of the output-projection matrix `lm_head` is the exactly-characterizable case) induces on the next-token logits, for every input, the transform `z ↦ s(x)·z + c(x)`: a ranking-preserving scalar temperature `s(x) > 0` plus a re-ranking bias `c(x)` **confined to a fixed, low-dimensional set of directions chosen before any input is seen** (T1; verified against direct forward-pass computation to ≈5×10⁻⁶). The result that matters is a *structure* theorem (T2): the input selects only a *point* in that fixed set and a temperature, so the reachable re-ranking directions, over all inputs, have affine dimension at most the installed-slot count. **In plain terms: a readout install can re-weight and re-rank the options the model already has, but cannot synthesize a new answer direction or compute a hidden routing variable the addressing query does not already expose.** We prove the readout regime's confinement and *cite* — not prove — evidence that the representation regime is not so confined; that direct measurement is the main open item. The corollaries, carefully bounded: a bounded readout install is **not a hard override** of a peaked prior, can only **tip** a decision the context has already scaffolded near-balanced, and **cannot compute** a hidden intermediate. Capacity has two faces, both empirical: across **key-disjoint** decisions installs compose bit-exactly at scale (tens of modules, thousands of facts, `Δ=0`); **within one** decision the readout is winner-take-all (≈2 targets co-winnable, against an output projection of entropy-effective rank ≈918). The control reading: *tip* a propensity in the readout regime — it is auditable, a removable bias — but place any hard guarantee in a deterministic override outside the model. The contribution is the boundary, stated precisely.
 
 ## 1. Introduction
 
-A growing toolbox modifies a frozen language model at inference time rather than by fine-tuning:
-activation/representation steering, function vectors, knowledge editors, attention-injected
-memories, and logit-space biases. These methods are attractive precisely because they are cheap,
-removable, and leave the base weights untouched. But they are not interchangeable, and the
-literature has not drawn a clean line between what each *can* and *cannot* do.
+A growing toolbox modifies a frozen language model at inference time rather than by fine-tuning: activation/representation steering, function vectors, knowledge editors, attention-injected memories, and logit-space biases. These methods are attractive precisely because they are cheap, removable, and leave the base weights untouched. But they are not interchangeable, and the literature has not drawn a clean line between what each *can* and *cannot* do.
 
-This paper draws that line for the case where the intervention is **additive in the final residual
-stream**: a vector added to the hidden state at the current decoding position, whose effect reaches
-the unembedding through the model's final normalization with no further nonlinear processing. The
-most exact instance — and our analytic anchor — is installing a scaled **row of the
-output-projection matrix** (`lm_head`), the "value = unembedding row of a target token"
-construction. That `lm_head` rows are special directions in this space is not new: the observation
-that "row *i* of `lm_head` is precisely the direction that produces high probability for token *i*"
-appears in recent work on retrofitting memory to frozen models (Wind, 2026, §4.4.3; see §8). We do
-not claim that observation. We claim its consequences, and we prove them.
+This paper draws that line for the case where the intervention is **additive in the final residual stream**: a vector added to the hidden state at the current decoding position, whose effect reaches the unembedding through the model's final normalization with no further nonlinear processing. The most exact instance — and our analytic anchor — is installing a scaled **row of the output-projection matrix** (`lm_head`), the "value = unembedding row of a target token" construction. That `lm_head` rows are special directions in this space is not new: the observation that "row *i* of `lm_head` is precisely the direction that produces high probability for token *i*" appears in recent work on retrofitting memory to frozen models (Wind, 2026, §4.4.3; see §8). We do not claim that observation. We claim its consequences, and we prove them.
 
 **Contributions.**
 
-1. **T1 — exact readout transform (known core; exact form).** A final-residual additive install
-   induces, on the next-token logits, the transform `z̃(x) = s(x)·z(x) + c(x)`, where under RMSNorm
-   `s(x) = r/r' > 0` is a scalar temperature and `c(x)` is a combination of **fixed** directions
-   `u_t = U(γ ⊙ U[t])`. The no-norm case is the exact additive Gram-column bias `z̃ = z + α·U U[t]`;
-   the LayerNorm case folds in a fixed centering (Lemma 4). We verify the closed form numerically
-   against direct forward-pass computation to max-diff 4.77×10⁻⁶ (Mistral-7B) and 7.15×10⁻⁶
-   (Qwen2.5-7B).
+1. **T1 — exact readout transform (known core; exact form).** A final-residual additive install induces, on the next-token logits, the transform `z̃(x) = s(x)·z(x) + c(x)`, where under RMSNorm `s(x) = r/r' > 0` is a scalar temperature and `c(x)` is a combination of **fixed** directions `u_t = U(γ ⊙ U[t])`. The no-norm case is the exact additive Gram-column bias `z̃ = z + α·U U[t]`; the LayerNorm case folds in a fixed centering (Lemma 4). We verify the closed form numerically against direct forward-pass computation to max-diff 4.77×10⁻⁶ (Mistral-7B) and 7.15×10⁻⁶ (Qwen2.5-7B).
 
-2. **T2 — cone-confinement structure theorem (the contribution).** Across **all** inputs, a readout
-   install's re-ranking term `c(x)` lies in a single **fixed** set `C` of affine dimension ≤ m (the
-   slot count) — the convex cone generated by the installed (possibly signed) generators — chosen
-   before any input. The input selects only a *point* in `C` (via key-addressed weights) and a
-   temperature. Hence the reachable set of re-ranking directions, over all inputs, has rank ≤ m, and a
-   readout install **cannot synthesize a re-ranking direction outside the pre-installed set** (defined
-   precisely in §4.3). This holds *even with* input-conditional, key-addressed attention over an
-   arbitrary stored set, and uses only that the stored values are fixed before input and the weights
-   are non-negative — *not* the `lm_head` identity (which is what makes T1 exact, §2 remark). The
-   unconditional, `m`-independent content is **fixedness** (no input creates a re-ranking direction
-   outside the `m` pre-stored generators); the `rank ≤ m` *number* bites only when `m` is small relative
-   to the answer cardinality — it is vacuous once `m` approaches the output projection's ≈918 effective
-   rank. (T2(a)–(c) follow from Lemmas 1/3/4; the load-bearing novelty is this fixedness/capacity
-   statement and its measurable form, Corollary T2′, not the per-input algebra.)
+2. **T2 — cone-confinement structure theorem (the contribution).** Across **all** inputs, a readout install's re-ranking term `c(x)` lies in a single **fixed** set `C` of affine dimension ≤ m (the slot count) — the convex cone generated by the installed (possibly signed) generators — chosen before any input. The input selects only a *point* in `C` (via key-addressed weights) and a temperature. Hence the reachable set of re-ranking directions, over all inputs, has rank ≤ m, and a readout install **cannot synthesize a re-ranking direction outside the pre-installed set** (defined precisely in §4.3). This holds *even with* input-conditional, key-addressed attention over an arbitrary stored set, and uses only that the stored values are fixed before input and the weights are non-negative — *not* the `lm_head` identity (which is what makes T1 exact, §2 remark). The unconditional, `m`-independent content is **fixedness** (no input creates a re-ranking direction outside the `m` pre-stored generators); the `rank ≤ m` *number* bites only when `m` is small relative to the answer cardinality — it is vacuous once `m` approaches the output projection's ≈918 effective rank. (T2(a)–(c) follow from Lemmas 1/3/4; the load-bearing novelty is this fixedness/capacity statement and its measurable form, Corollary T2′, not the per-input algebra.)
 
-3. **Corollaries (operational, carefully bounded).** T2 implies a readout install (C1) gives **no
-   hard override** of a peaked prior — a bounded install flips a decision only when its fixed-cone
-   correction beats the scaled base gap; (C2) can *tip* a context-scaffolded near-balanced decision;
-   and (C3) cannot *compute or synthesize* a hidden routing variable or a new answer direction — it
-   can exploit a hidden intermediate only insofar as the addressing query already exposes it. Each is
-   a bounded consequence, not a sweeping impossibility.
+3. **Corollaries (operational, carefully bounded).** T2 implies a readout install (C1) gives **no hard override** of a peaked prior — a bounded install flips a decision only when its fixed-cone correction beats the scaled base gap; (C2) can *tip* a context-scaffolded near-balanced decision; and (C3) cannot *compute or synthesize* a hidden routing variable or a new answer direction — it can exploit a hidden intermediate only insofar as the addressing query already exposes it. Each is a bounded consequence, not a sweeping impossibility.
 
-4. **Capacity observations (empirical, not a theorem).** Across **key-disjoint** decisions, installs
-   are additive and non-interfering at scale (tens of modules holding thousands of facts, bit-exact
-   `Δ=0`). Within a single decision, ≈2 targets are cleanly co-winnable, against an output-projection
-   whose entropy effective rank we measure at ≈918 (stable rank ≈10). We label these as evidence, not
-   a proved bound.
+4. **Capacity observations (empirical, not a theorem).** Across **key-disjoint** decisions, installs are additive and non-interfering at scale (tens of modules holding thousands of facts, bit-exact `Δ=0`). Within a single decision, ≈2 targets are cleanly co-winnable, against an output-projection whose entropy effective rank we measure at ≈918 (stable rank ≈10). We label these as evidence, not a proved bound.
 
-5. **An empirical map**, split by install site into (A) final-residual installs that behave exactly
-   as T1 predicts and (B) late-layer installs where the same boundary pattern is empirically visible —
-   bias-only tasks succeed, computation/chaining tasks hit the wall.
+5. **An empirical map**, split by install site into (A) final-residual installs that behave exactly as T1 predicts and (B) late-layer installs where the same boundary pattern is empirically visible — bias-only tasks succeed, computation/chaining tasks hit the wall.
 
-6. **A control reading.** The same limit that prevents *computed or hidden-routed* knowledge-injection via the readout regime (single-token recall on a flat prior still works — §7)
-   tells you which control jobs belong there (propensity tips, auditable as a removable bias) and
-   which require a deterministic override outside the model (hard gates).
+6. **A control reading.** The same limit that prevents *computed or hidden-routed* knowledge-injection via the readout regime (single-token recall on a flat prior still works — §7) tells you which control jobs belong there (propensity tips, auditable as a removable bias) and which require a deterministic override outside the model (hard gates).
 
-**Known vs. new.** The closed-form equivalence (T1) is essentially known — adding an `lm_head` row
-biases its token (Wind, 2026; §8). Our contribution is its *structure*: the cone-confinement theorem
-(T2), the falsification-probe family (§6), and the capacity observations (§5). One scope limit, stated
-up front: we prove cone-confinement of the readout regime and cite empirical evidence that the
-representation regime is *not* so confined, but we do **not** claim a formal containment lattice
-between the two — the distinction is structural, not a proven `⊆`/`⊊` (§4.4).
+**Known vs. new.** The closed-form equivalence (T1) is essentially known — adding an `lm_head` row biases its token (Wind, 2026; §8). Our contribution is its *structure*: the cone-confinement theorem (T2), the falsification-probe family (§6), and the capacity observations (§5). One scope limit, stated up front: we prove cone-confinement of the readout regime and cite empirical evidence that the representation regime is *not* so confined, but we do **not** claim a formal containment lattice between the two — the distinction is structural, not a proven `⊆`/`⊊` (§4.4).
 
 **Claim status at a glance.**
 
@@ -118,15 +48,12 @@ between the two — the distinction is structural, not a proven `⊆`/`⊊` (§4
 
 Fix a frozen transformer language model and a single decoding position. For input context `x`:
 
-- `h(x) ∈ R^d` — the residual-stream state at the **final** layer and current position,
-  immediately **before** the final normalization;
-- `N : R^d → R^d` — the final normalization (identity; RMSNorm with gain `γ ∈ R^d` and `ε > 0`;
-  or LayerNorm);
+- `h(x) ∈ R^d` — the residual-stream state at the **final** layer and current position, immediately **before** the final normalization;
+- `N : R^d → R^d` — the final normalization (identity; RMSNorm with gain `γ ∈ R^d` and `ε > 0`; or LayerNorm);
 - `U ∈ R^{|V|×d}` — the unembedding / output-projection matrix (`lm_head.weight`), rows `U[j]`;
 - `z(x) = U·N(h(x)) ∈ R^{|V|}` — base next-token logits; `p(x) = softmax(z(x))`.
 
-Write `G := U Uᵀ` (Gram matrix of unembedding rows), `g_t := U U[t] = G[:,t]`, and the
-**γ-weighted** column `u_t := U(γ ⊙ U[t])` (so `u_t = g_t` when `γ = 1`).
+Write `G := U Uᵀ` (Gram matrix of unembedding rows), `g_t := U U[t] = G[:,t]`, and the **γ-weighted** column `u_t := U(γ ⊙ U[t])` (so `u_t = g_t` when `γ = 1`).
 
 **Notation summary.**
 
@@ -144,121 +71,58 @@ Write `G := U Uᵀ` (Gram matrix of unembedding rows), `g_t := U U[t] = G[:,t]`,
 | `c(x) ∈ C` | re-ranking term; `C` = fixed re-ranking set, `dim span(C) ≤ m` |
 | `d(x) = z̃(x) − s(x)z(x)` | re-ranking residual (Corollary T2′) |
 
-**The readout-regime install.** A readout install is a finite set of *slots*
-`S = {(t_1,K_1,α_1), …, (t_m,K_m,α_m)}`, where slot `i` stores value `V_i = α_i·U[t_i]` (a scaled
-`lm_head` row; the scale `α_i ∈ R` is fixed before any input) and key `K_i`. At decode, a query
-`q(x)` (an input-addressing read of the current residual stream) produces **non-negative** weights
-`a_i(x) ≥ 0` over the slots (e.g. a softmax over `⟨q(x),K_i⟩`, optionally with an attention sink so
-`Σ_i a_i ≤ 1`), and the install adds to the final residual, before `N`:
+**The readout-regime install.** A readout install is a finite set of *slots* `S = {(t_1,K_1,α_1), …, (t_m,K_m,α_m)}`, where slot `i` stores value `V_i = α_i·U[t_i]` (a scaled `lm_head` row; the scale `α_i ∈ R` is fixed before any input) and key `K_i`. At decode, a query `q(x)` (an input-addressing read of the current residual stream) produces **non-negative** weights `a_i(x) ≥ 0` over the slots (e.g. a softmax over `⟨q(x),K_i⟩`, optionally with an attention sink so `Σ_i a_i ≤ 1`), and the install adds to the final residual, before `N`:
 
 ```
 Δ(x) = Σ_{i=1}^{m} a_i(x)·V_i = Σ_i a_i(x)·α_i·U[t_i] ∈ R^d,         (1)
 ```
 
-giving `h̃(x) = h(x) + Δ(x)` and installed logits `z̃(x) = U·N(h̃(x))`. The simplest case —
-one always-on slot, `m = 1`, `a_1 ≡ 1` — recovers the bare install `Δ = α·U[t]`.
+giving `h̃(x) = h(x) + Δ(x)` and installed logits `z̃(x) = U·N(h̃(x))`. The simplest case — one always-on slot, `m = 1`, `a_1 ≡ 1` — recovers the bare install `Δ = α·U[t]`.
 
-**Scope of the abstraction.** Eq. (1) is the *final-residual, direct-addition* object: a vector
-added straight to the residual that reaches the unembedding through `N` only.
+**Scope of the abstraction.** Eq. (1) is the *final-residual, direct-addition* object: a vector added straight to the residual that reaches the unembedding through `N` only.
 
-- *We deliberately do not model interventions injected earlier in the stack* (at an MLP
-  down-projection or attention output of a non-final layer), whose effect passes through the
-  remaining nonlinear layers before readout. Those are *representation-regime* interventions and T2
-  does not govern them. (This is why §7 is split: Tier A installs are literally eq. (1); Tier B
-  late-stack injections are reported as consistent-with, not as tests of the object.)
-- *Direct addition vs. attention-head addition (W_O).* Eq. (1) adds the stored value to the residual
-  directly. A real attention head would post-multiply by the output projection `W_O`, so the
-  unembedding image of a stored `lm_head` row would be `U·W_O·U[t]`, not the clean Gram column
-  `g_t = U·U[t]`. The final-residual embodiment we analyze (a "pure-geometric" install,
-  `residual ← residual + c·A` at the final-norm pre-hook) is a **direct addition**, so Lemma 1's exact
-  Gram-column form is faithful to it. If a memory is instead realized as a genuine attention head, the
-  generator becomes `cone{U W_O α_i U[t_i]}` — **still a fixed cone**, so T2(c) survives unchanged;
-  only Lemma 1's *exact* Gram-column identity and the §6 probes (which isolate the bare `lm_head` row)
-  require the direct-addition reading.
-- *The query need not be linear.* We do not assume `q(x)` is linear in `x`; T2 uses only that the
-  resulting weights `a_i(x)` are non-negative and that the keys/values are fixed before input. This
-  *strengthens* the result (it is robust to an arbitrarily nonlinear input-addressing read).
+- *We deliberately do not model interventions injected earlier in the stack* (at an MLP down-projection or attention output of a non-final layer), whose effect passes through the remaining nonlinear layers before readout. Those are *representation-regime* interventions and T2 does not govern them. (This is why §7 is split: Tier A installs are literally eq. (1); Tier B late-stack injections are reported as consistent-with, not as tests of the object.)
+- *Direct addition vs. attention-head addition (W_O).* Eq. (1) adds the stored value to the residual directly. A real attention head would post-multiply by the output projection `W_O`, so the unembedding image of a stored `lm_head` row would be `U·W_O·U[t]`, not the clean Gram column `g_t = U·U[t]`. The final-residual embodiment we analyze (a "pure-geometric" install, `residual ← residual + c·A` at the final-norm pre-hook) is a **direct addition**, so Lemma 1's exact Gram-column form is faithful to it. If a memory is instead realized as a genuine attention head, the generator becomes `cone{U W_O α_i U[t_i]}` — **still a fixed cone**, so T2(c) survives unchanged; only Lemma 1's *exact* Gram-column identity and the §6 probes (which isolate the bare `lm_head` row) require the direct-addition reading.
+- *The query need not be linear.* We do not assume `q(x)` is linear in `x`; T2 uses only that the resulting weights `a_i(x)` are non-negative and that the keys/values are fixed before input. This *strengthens* the result (it is robust to an arbitrarily nonlinear input-addressing read).
 
-**The defining invariant.** The stored directions `{U[t_i]}`, the scales `{α_i}`, and the keys
-`{K_i}` are **fixed before any input is seen**; the only input-dependent quantities are the
-non-negative weights `a_i(x)`. Everything below follows from *fixed-pre-input values + non-negative
-weights*.
+**The defining invariant.** The stored directions `{U[t_i]}`, the scales `{α_i}`, and the keys `{K_i}` are **fixed before any input is seen**; the only input-dependent quantities are the non-negative weights `a_i(x)`. Everything below follows from *fixed-pre-input values + non-negative weights*.
 
-*(Remark — generality vs. attribution.) The cone argument below uses only that the stored directions
-are fixed before input and the weights are non-negative; it does not use that the values are
-specifically `lm_head` rows. So T2 is broader than the `lm_head` construction. The `lm_head` identity
-is what makes T1 **exact** (the bias direction is `u_t`, a known unembedding column) and what the §6
-probes isolate; it is not required for the impossibility. The only way to escape T2 is to make the
-stored value itself an input-conditional nonlinear function of `x` (a genuine `W_V·N(context)` value)
-— at which point the intervention is a representation-regime computation, not a readout install. That
-closes the escape.)*
+*(Remark — generality vs. attribution.) The cone argument below uses only that the stored directions are fixed before input and the weights are non-negative; it does not use that the values are specifically `lm_head` rows. So T2 is broader than the `lm_head` construction. The `lm_head` identity is what makes T1 **exact** (the bias direction is `u_t`, a known unembedding column) and what the §6 probes isolate; it is not required for the impossibility. The only way to escape T2 is to make the stored value itself an input-conditional nonlinear function of `x` (a genuine `W_V·N(context)` value) — at which point the intervention is a representation-regime computation, not a readout install. That closes the escape.)*
 
 ---
 
 ## 3. T1 — The readout transform (closed form)
 
-> **Lemma 1 (no-norm, exact).** If `N = Id`, then for every input `x`,
-> `z̃(x) = z(x) + Σ_i a_i(x)·α_i·g_{t_i}`, with `g_t = U U[t] = G[:,t]`.
-> In the always-on single-slot case this is `z̃ = z + α·g_t`, a **fixed additive logit bias**
-> `b = α·G[:,t]`: token `t` gains `α‖U[t]‖²`; token `j` gains `α⟨U[j],U[t]⟩`.
+> **Lemma 1 (no-norm, exact).** If `N = Id`, then for every input `x`, `z̃(x) = z(x) + Σ_i a_i(x)·α_i·g_{t_i}`, with `g_t = U U[t] = G[:,t]`. In the always-on single-slot case this is `z̃ = z + α·g_t`, a **fixed additive logit bias** `b = α·G[:,t]`: token `t` gains `α‖U[t]‖²`; token `j` gains `α⟨U[j],U[t]⟩`.
 
 *Proof.* `z̃ = U(h+Δ) = z + UΔ = z + Σ_i a_i α_i U U[t_i]`. ∎
 
-> **Lemma 2 (reachable re-ranking set).** For any `x`, `m`, weights `a_i(x) ≥ 0`, and fixed scales
-> `α_i`, the induced logit perturbation `UΔ(x)` lies in the **fixed set**
+> **Lemma 2 (reachable re-ranking set).** For any `x`, `m`, weights `a_i(x) ≥ 0`, and fixed scales `α_i`, the induced logit perturbation `UΔ(x)` lies in the **fixed set**
 > ```
 > C := { Σ_i a_i α_i g_{t_i} : a_i ≥ 0 }   ⊆ span{g_{t_1},…,g_{t_m}} ⊆ col(U).
 > ```
-> If all `α_i ≥ 0`, `C = cone{g_{t_i}}` (a convex cone). If a scale `α_i` is negative, that slot
-> contributes the signed generator `α_i g_{t_i}`, and `C` is the convex cone over the signed
-> generators *actually installed* — `cone{α_i g_{t_i}}` — which equals the full subspace
-> `span{g_{t_i}}` iff the signed generators positively span it (installing each with both signs is
-> sufficient but not necessary). In all cases `dim span(C) ≤ m`, and `C` is determined entirely by
-> `(U, {t_i}, {α_i})` — chosen **before any input**.
+> If all `α_i ≥ 0`, `C = cone{g_{t_i}}` (a convex cone). If a scale `α_i` is negative, that slot contributes the signed generator `α_i g_{t_i}`, and `C` is the convex cone over the signed generators *actually installed* — `cone{α_i g_{t_i}}` — which equals the full subspace `span{g_{t_i}}` iff the signed generators positively span it (installing each with both signs is sufficient but not necessary). In all cases `dim span(C) ≤ m`, and `C` is determined entirely by `(U, {t_i}, {α_i})` — chosen **before any input**.
 
-*Proof.* Each `g_{t_i} ∈ col(U)`; a non-negative combination of `{α_i g_{t_i}}` is in the stated
-set; its span has dimension `≤ m`. ∎
+*Proof.* Each `g_{t_i} ∈ col(U)`; a non-negative combination of `{α_i g_{t_i}}` is in the stated set; its span has dimension `≤ m`. ∎
 
-> **Lemma 3 (RMSNorm — the temperature term).** Let `N(h) = γ ⊙ h / r(h)`,
-> `r(h) = √(mean(h²)+ε)`. Then for every input `x`,
+> **Lemma 3 (RMSNorm — the temperature term).** Let `N(h) = γ ⊙ h / r(h)`, `r(h) = √(mean(h²)+ε)`. Then for every input `x`,
 > ```
 > z̃(x) = s(x)·z(x) + Σ_i b_i(x)·u_{t_i},                                (2)
 > s(x) = r(h(x))/r(h̃(x)) > 0,    b_i(x) = a_i(x)·α_i / r(h̃(x)),    u_t = U(γ ⊙ U[t]).
 > ```
-> Equivalently, the induced bias `z̃ − z` is `(α/r')·u_t + ((r−r')/(r·r'))·U(γ⊙h)` for the
-> single-slot always-on case. We verify this identity numerically against direct forward-pass
-> computation to **max-diff 4.77×10⁻⁶ (Mistral-7B-Instruct-v0.3) and 7.15×10⁻⁶ (Qwen2.5-7B)**, with
-> the additive term carrying a median 96.1% (Mistral; 96.83% on Qwen) of `‖z̃−z‖` and the rescale term argmax-invariant.
+> Equivalently, the induced bias `z̃ − z` is `(α/r')·u_t + ((r−r')/(r·r'))·U(γ⊙h)` for the single-slot always-on case. We verify this identity numerically against direct forward-pass computation to **max-diff 4.77×10⁻⁶ (Mistral-7B-Instruct-v0.3) and 7.15×10⁻⁶ (Qwen2.5-7B)**, with the additive term carrying a median 96.1% (Mistral; 96.83% on Qwen) of `‖z̃−z‖` and the rescale term argmax-invariant.
 
-*Proof.* `z̃ = U(γ ⊙ (h+Δ))/r' = (r/r')·[U(γ⊙h)/r] + (1/r')·U(γ⊙Δ) = s·z + Σ_i (a_iα_i/r')·u_{t_i}`,
-`r' := r(h̃)`. For the single-slot always-on case, `s·z − z = ((r−r')/r')·[U(γ⊙h)/r] =
-((r−r')/(r·r'))·U(γ⊙h)`, and the additive term is `(α/r')·u_t`. (The `ε` in `r,r'` is retained; it
-perturbs `s` by `O(ε/‖h‖²)` and affects no ordering result.) ∎
+*Proof.* `z̃ = U(γ ⊙ (h+Δ))/r' = (r/r')·[U(γ⊙h)/r] + (1/r')·U(γ⊙Δ) = s·z + Σ_i (a_iα_i/r')·u_{t_i}`, `r' := r(h̃)`. For the single-slot always-on case, `s·z − z = ((r−r')/r')·[U(γ⊙h)/r] = ((r−r')/(r·r'))·U(γ⊙h)`, and the additive term is `(α/r')·u_t`. (The `ε` in `r,r'` is retained; it perturbs `s` by `O(ε/‖h‖²)` and affects no ordering result.) ∎
 
-> **Lemma 4 (LayerNorm — centering folds in).** Let `N(h) = γ ⊙ (Ph)/σ(h)` (biasless LayerNorm; the
-> additive-`β` case is in the remark below) with the centering projection `P = I − (1/d)11ᵀ` and
-> `σ(h) = √(mean((Ph)²)+ε)`. Then `z̃(x) = (σ/σ')·z(x) + (1/σ')·Σ_i a_i α_i · ũ_{t_i}`, where
-> `ũ_t := U(γ ⊙ P U[t])` is a **fixed** direction and `σ' := σ(h̃)`. The temperature `σ/σ' > 0`, and
-> the re-ranking set `C̃ = {Σ_i a_iα_i ũ_{t_i}}` has the same fixed-≤m-dimensional structure as
-> Lemma 2.
+> **Lemma 4 (LayerNorm — centering folds in).** Let `N(h) = γ ⊙ (Ph)/σ(h)` (biasless LayerNorm; the additive-`β` case is in the remark below) with the centering projection `P = I − (1/d)11ᵀ` and `σ(h) = √(mean((Ph)²)+ε)`. Then `z̃(x) = (σ/σ')·z(x) + (1/σ')·Σ_i a_i α_i · ũ_{t_i}`, where `ũ_t := U(γ ⊙ P U[t])` is a **fixed** direction and `σ' := σ(h̃)`. The temperature `σ/σ' > 0`, and the re-ranking set `C̃ = {Σ_i a_iα_i ũ_{t_i}}` has the same fixed-≤m-dimensional structure as Lemma 2.
 
-*Proof.* `P` and `γ⊙(·)` are fixed linear maps; `z = (U diag(γ) P) h / σ`. Adding `Δ`:
-`z̃ = (U diag(γ) P)(h+Δ)/σ' = (σ/σ')z + (1/σ') U diag(γ) P Δ`, and `U diag(γ) P U[t_i] = ũ_{t_i}` is
-fixed. ∎
+*Proof.* `P` and `γ⊙(·)` are fixed linear maps; `z = (U diag(γ) P) h / σ`. Adding `Δ`: `z̃ = (U diag(γ) P)(h+Δ)/σ' = (σ/σ')z + (1/σ') U diag(γ) P Δ`, and `U diag(γ) P U[t_i] = ũ_{t_i}` is fixed. ∎
 
-*Remark (final LayerNorm bias `β`).* With `N(h) = γ ⊙ (Ph)/σ + β`, the logits carry an extra term
-`Uβ`; the re-ranking residual then gains `(1 − σ/σ')·Uβ` — **one additional fixed direction** `Uβ`,
-input-modulated only by the scalar temperature mismatch. The set `C` grows to ≤ m+1 fixed directions,
-still a fixed finite direction set, so the cone-confinement of T2 is unchanged. Most modern decoders
-(RMSNorm-family, biasless LayerNorm) have no `β`; we note this only for completeness.
+*Remark (final LayerNorm bias `β`).* With `N(h) = γ ⊙ (Ph)/σ + β`, the logits carry an extra term `Uβ`; the re-ranking residual then gains `(1 − σ/σ')·Uβ` — **one additional fixed direction** `Uβ`, input-modulated only by the scalar temperature mismatch. The set `C` grows to ≤ m+1 fixed directions, still a fixed finite direction set, so the cone-confinement of T2 is unchanged. Most modern decoders (RMSNorm-family, biasless LayerNorm) have no `β`; we note this only for completeness.
 
-So under any of `{Id, RMSNorm, LayerNorm}`, a readout install is **exactly** a positive per-input
-rescale of the base logits plus a combination of **fixed** directions. The headline survives
-normalization: **readout install = fixed-direction-set bias + scalar temperature.**
+So under any of `{Id, RMSNorm, LayerNorm}`, a readout install is **exactly** a positive per-input rescale of the base logits plus a combination of **fixed** directions. The headline survives normalization: **readout install = fixed-direction-set bias + scalar temperature.**
 
-**Relation to prior work.** The no-norm core (Lemma 1 — adding an `lm_head` row biases its token) is
-the observation Wind (2026, §4.4.3) and informal "logit-gap" notes already make. T1's job is to
-state it *exactly* and expose the structure (the fixed direction set, the temperature) that T2 needs.
+**Relation to prior work.** The no-norm core (Lemma 1 — adding an `lm_head` row biases its token) is the observation Wind (2026, §4.4.3) and informal "logit-gap" notes already make. T1's job is to state it *exactly* and expose the structure (the fixed direction set, the temperature) that T2 needs.
 
 ---
 
@@ -272,97 +136,33 @@ By Lemmas 1/3/4, a readout install acts on every input as
 z̃(x) = s(x)·z(x) + c(x),     s(x) > 0,     c(x) ∈ C,                  (3)
 ```
 
-where `C` is the **fixed** re-ranking set of Lemma 2 (`dim span(C) ≤ m`, chosen before any input)
-and `s(x)` is a scalar temperature.
+where `C` is the **fixed** re-ranking set of Lemma 2 (`dim span(C) ≤ m`, chosen before any input) and `s(x)` is a scalar temperature.
 
-**What the temperature does, stated correctly.** For any `s > 0`, `s·z` preserves the *entire
-ranking* of `z` — a pure temperature changes confidence (entropy), never order. It does **not**
-follow that "all re-ranking lives in `c` independent of `s`": the *realized* re-ranking is determined
-**jointly**, because `c` competes against the scaled base logits `s·z` (large `s` lets the base
-dominate; small `s` lets `c` dominate). Two inputs with the same cone-point `c` but different `s` can
-therefore differ in which pairs flip. The structure claim (§4.2) is about the *available re-ranking
-directions* — those, and only those, in the fixed `C` — and is unaffected by this interaction.
+**What the temperature does, stated correctly.** For any `s > 0`, `s·z` preserves the *entire ranking* of `z` — a pure temperature changes confidence (entropy), never order. It does **not** follow that "all re-ranking lives in `c` independent of `s`": the *realized* re-ranking is determined **jointly**, because `c` competes against the scaled base logits `s·z` (large `s` lets the base dominate; small `s` lets `c` dominate). Two inputs with the same cone-point `c` but different `s` can therefore differ in which pairs flip. The structure claim (§4.2) is about the *available re-ranking directions* — those, and only those, in the fixed `C` — and is unaffected by this interaction.
 
 ### 4.2 The structure theorem
 
-> **Theorem T2 (cone-confinement).** Let an intervention be a readout install (§2; values fixed
-> before input, weights non-negative, direct final-residual addition). Then for every input `x`,
-> eq. (3) holds with a *single* fixed `C` (`dim span(C) ≤ m`) and `s(x) > 0`. Consequently:
+> **Theorem T2 (cone-confinement).** Let an intervention be a readout install (§2; values fixed before input, weights non-negative, direct final-residual addition). Then for every input `x`, eq. (3) holds with a *single* fixed `C` (`dim span(C) ≤ m`) and `s(x) > 0`. Consequently:
 >
-> **(a) Fixed-bias core (no-norm, always-on).** The intervention applies the *same* additive bias
-> `b ∈ C` to every input: `z̃(x) = z(x) + b`, so `p̃(x) = Ψ_b(p(x))` with `Ψ_b` **independent of
-> `x`**. Inputs the base model maps to equal output distributions are mapped identically.
+> **(a) Fixed-bias core (no-norm, always-on).** The intervention applies the *same* additive bias `b ∈ C` to every input: `z̃(x) = z(x) + b`, so `p̃(x) = Ψ_b(p(x))` with `Ψ_b` **independent of `x`**. Inputs the base model maps to equal output distributions are mapped identically.
 >
-> **(b) Pairwise-gap structure.** For any token pair `(j,k)`,
-> `z̃_j(x) − z̃_k(x) = s(x)·[z_j(x) − z_k(x)] + (c_j(x) − c_k(x))`, with `c(x) ∈ C`. In the
-> always-on no-norm case `s ≡ 1` and `(c_j − c_k)` is a **constant**, so the post-install ranking of
-> `(j,k)` is a fixed threshold of the *base* gap. In the general normed/attention case the
-> correction varies with `x`, but **only through a point of the fixed `C` and the scalar `s`**.
+> **(b) Pairwise-gap structure.** For any token pair `(j,k)`, `z̃_j(x) − z̃_k(x) = s(x)·[z_j(x) − z_k(x)] + (c_j(x) − c_k(x))`, with `c(x) ∈ C`. In the always-on no-norm case `s ≡ 1` and `(c_j − c_k)` is a **constant**, so the post-install ranking of `(j,k)` is a fixed threshold of the *base* gap. In the general normed/attention case the correction varies with `x`, but **only through a point of the fixed `C` and the scalar `s`**.
 >
-> **(c) Cone confinement (general).** For arbitrary `N ∈ {Id, RMSNorm, LayerNorm}`, `m`, and
-> (possibly nonlinear) input-addressing weights `a_i(x) ≥ 0`, the re-ranking term `c(x)` lies, for
-> **every** input, in the **fixed** set `C` (`dim span(C) ≤ m`) chosen before any input. The input
-> selects only a *point* in `C` and a temperature `s(x) > 0`. An attention sink only makes
-> `Σ_i a_i ≤ 1`, shrinking but never leaving `C`. (For a pure softmax addressor with no sink,
-> `Σ_i a_i = 1`, so the reachable set is the convex-hull slice `conv{α_i g_{t_i}} ⊆ C`; `C` is a valid
-> over-approximation and `dim span(C) ≤ m` is unaffected.)
+> **(c) Cone confinement (general).** For arbitrary `N ∈ {Id, RMSNorm, LayerNorm}`, `m`, and (possibly nonlinear) input-addressing weights `a_i(x) ≥ 0`, the re-ranking term `c(x)` lies, for **every** input, in the **fixed** set `C` (`dim span(C) ≤ m`) chosen before any input. The input selects only a *point* in `C` and a temperature `s(x) > 0`. An attention sink only makes `Σ_i a_i ≤ 1`, shrinking but never leaving `C`. (For a pure softmax addressor with no sink, `Σ_i a_i = 1`, so the reachable set is the convex-hull slice `conv{α_i g_{t_i}} ⊆ C`; `C` is a valid over-approximation and `dim span(C) ≤ m` is unaffected.)
 
-*Proof.* Lemma 1 gives (a) and the `s ≡ 1` part of (b). Lemmas 3/4 give eq. (3) and hence general
-(b) and (c): the additive term is `Σ_i b_i(x) u_{t_i}` (resp. `ũ`), a point of `C`; `s(x) > 0`
-preserves the ranking of `z(x)`. ∎
+*Proof.* Lemma 1 gives (a) and the `s ≡ 1` part of (b). Lemmas 3/4 give eq. (3) and hence general (b) and (c): the additive term is `Σ_i b_i(x) u_{t_i}` (resp. `ũ`), a point of `C`; `s(x) > 0` preserves the ranking of `z(x)`. ∎
 
-> **Corollary T2′ (capacity of input-conditional re-ranking).** Define the **re-ranking residual** using
-> the install's **structural** temperature `s(x) = r(h(x))/r(h̃(x))` (Lemma 3):
-> `d(x) := z̃(x) − s(x)·z(x)`. For a readout install, `d(x) = c(x) ∈ C` for all `x`, so the affine
-> dimension of `{ d(x) : x ∈ inputs }` is **at most `m`**. Any intervention whose re-ranking residual —
-> measured at this **structural** temperature — spans affine dimension `> m` over the same input set is
-> **not** realizable as an `m`-slot readout install. (We use the structural `s(x)`, not a least-squares
-> best fit: a best-fit scalar absorbs part of `c(x)` and would inflate the apparent rank, so the exact
-> `d(x) = c(x)` identity holds only at `s = r/r′`. This `s(x)` is computed from the install's own
-> pre/post-norm ratio and has **no canonical analogue** for an arbitrary representation-regime
-> intervention, so the measure is readout-anchored, not fully regime-neutral — see §4.3.)
+> **Corollary T2′ (capacity of input-conditional re-ranking).** Define the **re-ranking residual** using the install's **structural** temperature `s(x) = r(h(x))/r(h̃(x))` (Lemma 3): `d(x) := z̃(x) − s(x)·z(x)`. For a readout install, `d(x) = c(x) ∈ C` for all `x`, so the affine dimension of `{ d(x) : x ∈ inputs }` is **at most `m`**. Any intervention whose re-ranking residual — measured at this **structural** temperature — spans affine dimension `> m` over the same input set is **not** realizable as an `m`-slot readout install. (We use the structural `s(x)`, not a least-squares best fit: a best-fit scalar absorbs part of `c(x)` and would inflate the apparent rank, so the exact `d(x) = c(x)` identity holds only at `s = r/r′`. This `s(x)` is computed from the install's own pre/post-norm ratio and has **no canonical analogue** for an arbitrary representation-regime intervention, so the measure is readout-anchored, not fully regime-neutral — see §4.3.)
 
 ### 4.3 Why this is a bound, not a tautology
 
-A reviewer's natural worry: if we *defined* "input-conditional computation" as exactly "a re-ranking
-not of the readout form," then "readout installs can't do it" would be true by construction. We avoid
-that. T2 is stated as a **structure theorem** (the reachable re-ranking set is a fixed ≤ m-dim cone),
-and the substance lives in Corollary T2′, a **capacity bound** measured by a quantity — the affine
-rank of the re-ranking residual `d(x)` — that names no mechanism. (One honest caveat: `d(x)` subtracts
-the install's *structural* temperature `r/r′`, which has no canonical analogue for a representation
-intervention, so the measure is readout-anchored rather than fully regime-neutral; the non-tautological
-content is that this rank is capped at `m` *for the readout install* no matter how nonlinear the
-addressor is.)
+A reviewer's natural worry: if we *defined* "input-conditional computation" as exactly "a re-ranking not of the readout form," then "readout installs can't do it" would be true by construction. We avoid that. T2 is stated as a **structure theorem** (the reachable re-ranking set is a fixed ≤ m-dim cone), and the substance lives in Corollary T2′, a **capacity bound** measured by a quantity — the affine rank of the re-ranking residual `d(x)` — that names no mechanism. (One honest caveat: `d(x)` subtracts the install's *structural* temperature `r/r′`, which has no canonical analogue for a representation intervention, so the measure is readout-anchored rather than fully regime-neutral; the non-tautological content is that this rank is capped at `m` *for the readout install* no matter how nonlinear the addressor is.)
 
-> **Definition (input-conditional re-ranking, regime-independent).** An intervention performs
-> *input-conditional re-ranking of order `k`* on an input set `X` if, after removing the best-fit
-> positive scalar multiple of the base logits for each input, the residual re-ranking vectors `{d(x)}`
-> span affine dimension `k`, and the map from input to residual direction depends on an intermediate
-> variable not fixed as part of the intervention.
+> **Definition (input-conditional re-ranking, regime-independent).** An intervention performs *input-conditional re-ranking of order `k`* on an input set `X` if, after removing the best-fit positive scalar multiple of the base logits for each input, the residual re-ranking vectors `{d(x)}` span affine dimension `k`, and the map from input to residual direction depends on an intermediate variable not fixed as part of the intervention.
 
-This definition refers only to the residual rank and the dependence on a non-fixed intermediate; it
-names no mechanism. (Note the two temperatures: this regime-*neutral* order uses the per-input
-**best-fit** scalar, because an arbitrary intervention has no canonical temperature; the readout
-**bound** of Corollary T2′ is stated at the install's **structural** `r/r′`. The two coincide only up to
-the temperature mismatch — under best-fit, a readout install's *apparent* order can exceed `m` because
-the mismatch leaks the cone's own components into `d(x)`. So the clean ≤ m statement is the structural
-one; the best-fit definition gives a weaker, fully regime-neutral comparison.) The readout-specific
-limitation is then a separate statement: a readout install can realize such variation **only by selecting
-among its pre-stored directions** — it cannot create new directions, and successful routing to a hidden
-bridge requires the addressor to already expose that bridge.
+This definition refers only to the residual rank and the dependence on a non-fixed intermediate; it names no mechanism. (Note the two temperatures: this regime-*neutral* order uses the per-input **best-fit** scalar, because an arbitrary intervention has no canonical temperature; the readout **bound** of Corollary T2′ is stated at the install's **structural** `r/r′`. The two coincide only up to the temperature mismatch — under best-fit, a readout install's *apparent* order can exceed `m` because the mismatch leaks the cone's own components into `d(x)`. So the clean ≤ m statement is the structural one; the best-fit definition gives a weaker, fully regime-neutral comparison.) The readout-specific limitation is then a separate statement: a readout install can realize such variation **only by selecting among its pre-stored directions** — it cannot create new directions, and successful routing to a hidden bridge requires the addressor to already expose that bridge.
 
-A 2-hop task whose answer token depends on a hidden bridge taking `B` values needs the re-ranking
-direction to access `B` distinct answer directions *selected by the bridge value*. T2 does **not**
-constrain what the addressor `q(x)` has computed — `q(x)` may be arbitrary and nonlinear; T2
-constrains only what happens *after* the addressor reduces the input to non-negative weights over
-the fixed stored values. So the **unconditional** bound is: a readout install **cannot synthesize a
-new answer direction** outside the installed `m` — even at `m ≥ B`, no input produces a re-ranking
-direction the install did not pre-store. Whether it can *route* to the right stored direction is
-**conditional** on the addressor: it routes correctly iff `q(x)` already exposes the bridge (the final
-residual linearly encodes it), and it **cannot compute** a bridge the residual does not already
-expose. The non-tautological content of T2 is the *direction-creation* limit (rank ≤ m), which holds
-regardless of the addressor; the routing failure on any given surface is the separate, empirical
-question of whether that surface's residual exposes the bridge (it does not, on the surfaces of §7).
+A 2-hop task whose answer token depends on a hidden bridge taking `B` values needs the re-ranking direction to access `B` distinct answer directions *selected by the bridge value*. T2 does **not** constrain what the addressor `q(x)` has computed — `q(x)` may be arbitrary and nonlinear; T2 constrains only what happens *after* the addressor reduces the input to non-negative weights over the fixed stored values. So the **unconditional** bound is: a readout install **cannot synthesize a new answer direction** outside the installed `m` — even at `m ≥ B`, no input produces a re-ranking direction the install did not pre-store. Whether it can *route* to the right stored direction is **conditional** on the addressor: it routes correctly iff `q(x)` already exposes the bridge (the final residual linearly encodes it), and it **cannot compute** a bridge the residual does not already expose. The non-tautological content of T2 is the *direction-creation* limit (rank ≤ m), which holds regardless of the addressor; the routing failure on any given surface is the separate, empirical question of whether that surface's residual exposes the bridge (it does not, on the surfaces of §7).
 
 ### 4.4 The two regimes: a structural distinction, not a containment lattice
 
@@ -381,138 +181,44 @@ question of whether that surface's residual exposes the bridge (it does not, on 
                      confined ──
 ```
 
-> **Figure 1.** *Where the intervention acts decides what it can do.* A representation-regime install
-> (left) is reshaped by the nonlinear tail and can encode input-conditional computation that the logit
-> lens cannot decode (Nadaf, 2026). A readout install (right) reaches the logits through the final norm
-> only, so by T1/T2 its effect is a scalar temperature plus a re-ranking term confined to a fixed
-> ≤ m-dimensional cone chosen before any input. We prove the right-hand confinement; the left-hand
-> non-confinement is cited as empirical.
+> **Figure 1.** *Where the intervention acts decides what it can do.* A representation-regime install (left) is reshaped by the nonlinear tail and can encode input-conditional computation that the logit lens cannot decode (Nadaf, 2026). A readout install (right) reaches the logits through the final norm only, so by T1/T2 its effect is a scalar temperature plus a re-ranking term confined to a fixed ≤ m-dimensional cone chosen before any input. We prove the right-hand confinement; the left-hand non-confinement is cited as empirical.
 
-We **do not** claim a formal lattice `G_read ⊊ G_repr` between the behaviors realizable by readout
-installs and by representation-regime (mid-layer) interventions. A general containment in either
-direction is not proven here: the "easy" direction `G_read ⊆ G_repr` is not obviously true (a fixed
-mid-layer perturbation pushed through the nonlinear tail need not reproduce an arbitrary final-residual
-cone bias), so the two classes may be **incomparable**, not nested. What we state is the **provable
-asymmetry**:
+We **do not** claim a formal lattice `G_read ⊊ G_repr` between the behaviors realizable by readout installs and by representation-regime (mid-layer) interventions. A general containment in either direction is not proven here: the "easy" direction `G_read ⊆ G_repr` is not obviously true (a fixed mid-layer perturbation pushed through the nonlinear tail need not reproduce an arbitrary final-residual cone bias), so the two classes may be **incomparable**, not nested. What we state is the **provable asymmetry**:
 
-- **Readout regime (proved):** re-ranking is confined to a fixed ≤ m-dim cone chosen before any input
-  (T2); the re-ranking residual has affine rank ≤ m (T2′).
-- **Representation regime (empirical, not proved here):** existing function-vector results provide
-  empirical evidence for mid/early-layer steering that is **not well described as a fixed
-  answer-direction bias under the logit lens** — it steers even where the logit lens cannot decode the
-  answer at any layer (Nadaf, 2026). We do not compute `d(x)` for those interventions, so we do not
-  claim their residual rank exceeds a comparable readout install's; the formal residual-rank
-  comparison is future work.
+- **Readout regime (proved):** re-ranking is confined to a fixed ≤ m-dim cone chosen before any input (T2); the re-ranking residual has affine rank ≤ m (T2′).
+- **Representation regime (empirical, not proved here):** existing function-vector results provide empirical evidence for mid/early-layer steering that is **not well described as a fixed answer-direction bias under the logit lens** — it steers even where the logit lens cannot decode the answer at any layer (Nadaf, 2026). We do not compute `d(x)` for those interventions, so we do not claim their residual rank exceeds a comparable readout install's; the formal residual-rank comparison is future work.
 
-*Illustrative witness (sketch, explicitly not a theorem).* A single mid-layer additive steer
-`h_ℓ ↦ h_ℓ + Δ` induces `z̃(x) = U·N(F_{ℓ→L}(h_ℓ(x)+Δ))` with `F_{ℓ→L}` nonlinear; on a task where a
-hidden bit computed by `F_{ℓ→L}` gates which of two unembedding-incomparable directions the re-ranking
-takes, `{d(x)}` has affine rank > 1 with input-driven selection — order-2 input-conditional re-ranking,
-which no `m=1` readout install achieves. We offer this as an existence illustration consistent with
-Nadaf (2026); a model-independent separation (a concrete witness *and* the inclusion direction) is
-left open (§10).
+*Illustrative witness (sketch, explicitly not a theorem).* A single mid-layer additive steer `h_ℓ ↦ h_ℓ + Δ` induces `z̃(x) = U·N(F_{ℓ→L}(h_ℓ(x)+Δ))` with `F_{ℓ→L}` nonlinear; on a task where a hidden bit computed by `F_{ℓ→L}` gates which of two unembedding-incomparable directions the re-ranking takes, `{d(x)}` has affine rank > 1 with input-driven selection — order-2 input-conditional re-ranking, which no `m=1` readout install achieves. We offer this as an existence illustration consistent with Nadaf (2026); a model-independent separation (a concrete witness *and* the inclusion direction) is left open (§10).
 
-*Remark (no col(U) sleight-of-hand).* Every logit vector from any intervention lies in `col(U)`
-trivially (it is `U` times something), so the separation is **not** "readout stays in col(U),
-representation leaves it." The sharp invariant is the **fixed cone**: a readout install's re-ranking is
-a combination of a *pre-fixed* ≤ m-dim direction set, identical across inputs. The representation-side
-"not cone-confined" half is, in this paper, an **empirical** fact (Nadaf, 2026), not a proof step —
-and "pre-fixed" means the installed slot set and keys are frozen *before the input*, explicitly
-excluding context-time / retrieval-augmented slot selection (where the stored set is chosen per query).
+*Remark (no col(U) sleight-of-hand).* Every logit vector from any intervention lies in `col(U)` trivially (it is `U` times something), so the separation is **not** "readout stays in col(U), representation leaves it." The sharp invariant is the **fixed cone**: a readout install's re-ranking is a combination of a *pre-fixed* ≤ m-dim direction set, identical across inputs. The representation-side "not cone-confined" half is, in this paper, an **empirical** fact (Nadaf, 2026), not a proof step — and "pre-fixed" means the installed slot set and keys are frozen *before the input*, explicitly excluding context-time / retrieval-augmented slot selection (where the stored set is chosen per query).
 
 ### 4.5 Corollaries
 
 Three operational corollaries follow, each matched to evidence in §7 (tier stated there).
 
-- **C1 — no hard override under bounded correction.** By T2(b), a pair `(target, prior)` flips only
-  when `c_target(x) − c_prior(x) > s(x)·[z_prior(x) − z_target(x)]`. For any **bounded** install
-  (drift-limited per its calibration, so it stays multi-fact-safe), the left side is bounded by the
-  cone geometry, so there exist base gaps large enough that no flip is possible: bounded readout
-  installs are **not hard overrides**, even with the install direction exactly correct. (Some peaked
-  priors *can* be flipped — the claim is the absence of a *guarantee* under bounded correction, not
-  that every peaked prior survives. An *unbounded* install can force a target as argmax — Tier-B
-  any-token, +20 nats — but only by corrupting every other pairwise gap: a blunt overwrite, not a
-  controlled override.) *Evidence (Tier B, §7):* injecting the oracle-correct value (`V ==
-  lm_head[target]`, cos ≈ 1.0) at the late residual, scaled ×1…×8, moves the target logit by only
-  **+0.016…+0.136** and the model stays on its peaked prior (8/32). The failure is structural, not a
-  wrong-direction problem.
+- **C1 — no hard override under bounded correction.** By T2(b), a pair `(target, prior)` flips only when `c_target(x) − c_prior(x) > s(x)·[z_prior(x) − z_target(x)]`. For any **bounded** install (drift-limited per its calibration, so it stays multi-fact-safe), the left side is bounded by the cone geometry, so there exist base gaps large enough that no flip is possible: bounded readout installs are **not hard overrides**, even with the install direction exactly correct. (Some peaked priors *can* be flipped — the claim is the absence of a *guarantee* under bounded correction, not that every peaked prior survives. An *unbounded* install can force a target as argmax — Tier-B any-token, +20 nats — but only by corrupting every other pairwise gap: a blunt overwrite, not a controlled override.) *Evidence (Tier B, §7):* injecting the oracle-correct value (`V == lm_head[target]`, cos ≈ 1.0) at the late residual, scaled ×1…×8, moves the target logit by only **+0.016…+0.136** and the model stays on its peaked prior (8/32). The failure is structural, not a wrong-direction problem.
 
-- **C2 — can only *tip* a context-scaffolded near-balanced decision.** When in-context structure
-  flattens the base gap across the candidate set, a small bias from `C` selects the target — and the
-  composition is performed by the **visible context, not by the injected module**, consistent with T2.
-  *Evidence (Tier B, §7):* a composition surface with a **visible** runtime operand reaches 272/272 at
-  the **oracle / exact-captured-per-m delta** — the *upper bound* (controls: no-module 0.2684,
-  wrong-delta 0.0551, so the lift is real and bridge-independent). But the **learned hidden route on the
-  same surface reaches only 189/272 = 0.695 and fails its pre-registered gate**, and that residual is
-  itself K=4-codebook regression error, *not* module recovery — so C2's support is the in-context
-  scaffolding plus the controls, **not** any claim that the module *recovered* the operand. A separate
-  residual-injection arm reaches 32/32 **only when the bridge→status table is visible in context**, with
-  the no-bridge floor at 7/32.
+- **C2 — can only *tip* a context-scaffolded near-balanced decision.** When in-context structure flattens the base gap across the candidate set, a small bias from `C` selects the target — and the composition is performed by the **visible context, not by the injected module**, consistent with T2. *Evidence (Tier B, §7):* a composition surface with a **visible** runtime operand reaches 272/272 at the **oracle / exact-captured-per-m delta** — the *upper bound* (controls: no-module 0.2684, wrong-delta 0.0551, so the lift is real and bridge-independent). But the **learned hidden route on the same surface reaches only 189/272 = 0.695 and fails its pre-registered gate**, and that residual is itself K=4-codebook regression error, *not* module recovery — so C2's support is the in-context scaffolding plus the controls, **not** any claim that the module *recovered* the operand. A separate residual-injection arm reaches 32/32 **only when the bridge→status table is visible in context**, with the no-bridge floor at 7/32.
 
-- **C3 — cannot *compute* a hidden intermediate (conditional).** A readout install cannot create a
-  new answer direction or compute a routing variable (T2/T2′); it can route to a hidden bridge **only
-  if** the addressing query already exposes it. So multi-hop chaining fails whenever the bridge is not
-  linearly available to the addressor — an empirical property of the surface, not a T2 consequence
-  alone (see §4.3). *Evidence (Tier B, §7), across three families:* installing the captured first-hop
-  delta and forcing a second decode fails to chain — on **Llama-3.1-8B** the strongest single-pass
-  multi-hop cell is **0.183 vs a 0.40 bar** (n=372 MQuAKE-CF chains; McNemar canon-vs-control
-  p = 2.15×10⁻²⁰), with the honest caveat that this surface installs at the *subject* positions and
-  Phase-2 re-encodes the bridge, so it is a **locus-confounded near-miss**, not a pure final-residual
-  wall; a **Llama→Mistral cross-host** install-then-continue gate reaches **0.120 vs a 0.70 bar**
-  (n=50). A mid-layer "read" — on a small *from-scratch CCA substrate* (toy; artifacts off-repo) — is
-  bias-equivalent (cosine 0.9918) with below-chance composition (2/16 < 0.25) and payload-swap 0/3. A
-  directly-built *hidden* second-hop surface failed its own positive control (8/32 at base rate) and is
-  reported in §7 as a failed construction, not as a clean wall demonstration.
+- **C3 — cannot *compute* a hidden intermediate (conditional).** A readout install cannot create a new answer direction or compute a routing variable (T2/T2′); it can route to a hidden bridge **only if** the addressing query already exposes it. So multi-hop chaining fails whenever the bridge is not linearly available to the addressor — an empirical property of the surface, not a T2 consequence alone (see §4.3). *Evidence (Tier B, §7), across three families:* installing the captured first-hop delta and forcing a second decode fails to chain — on **Llama-3.1-8B** the strongest single-pass multi-hop cell is **0.183 vs a 0.40 bar** (n=372 MQuAKE-CF chains; McNemar canon-vs-control p = 2.15×10⁻²⁰), with the honest caveat that this surface installs at the *subject* positions and Phase-2 re-encodes the bridge, so it is a **locus-confounded near-miss**, not a pure final-residual wall; a **Llama→Mistral cross-host** install-then-continue gate reaches **0.120 vs a 0.70 bar** (n=50). A mid-layer "read" — on a small *from-scratch CCA substrate* (toy; artifacts off-repo) — is bias-equivalent (cosine 0.9918) with below-chance composition (2/16 < 0.25) and payload-swap 0/3. A directly-built *hidden* second-hop surface failed its own positive control (8/32 at base rate) and is reported in §7 as a failed construction, not as a clean wall demonstration.
 
 ---
 
 ## 5. Capacity of the readout regime (empirical observations)
 
-Co-installing `{(t_i,K_i,α_i)}` gives, at a decision, the combined re-ranking term
-`Σ_i b_i(x) u_{t_i}`. Two *distinct* geometries govern capacity and must not be conflated:
+Co-installing `{(t_i,K_i,α_i)}` gives, at a decision, the combined re-ranking term `Σ_i b_i(x) u_{t_i}`. Two *distinct* geometries govern capacity and must not be conflated:
 
-- **Across decisions — key-disjointness.** When at most one module is addressed per decision
-  (`a_i ≈ 0` for non-matching modules), installs are **additive and non-interfering**. Empirically,
-  co-loaded single-fact modules give **bit-exact** output (`Δ = 0`) and idempotent load/unload with
-  `Δppl = 0` against the unmodified model: 43 real-Wikipedia knowledge bases holding ~2,580 facts,
-  per-KB co-load Δ = +0.00 pp at the 95th percentile, plus an N=100 synthetic co-load. The
-  cross-decision capacity is, for practical purposes, unbounded *given key-disjointness* — this is a
-  property of the keys, not a theorem about the values. (We say "tens of co-loaded modules holding
-  thousands of facts," not "thousands of modules," to match the measured records.)
+- **Across decisions — key-disjointness.** When at most one module is addressed per decision (`a_i ≈ 0` for non-matching modules), installs are **additive and non-interfering**. Empirically, co-loaded single-fact modules give **bit-exact** output (`Δ = 0`) and idempotent load/unload with `Δppl = 0` against the unmodified model: 43 real-Wikipedia knowledge bases holding ~2,580 facts, per-KB co-load Δ = +0.00 pp at the 95th percentile, plus an N=100 synthetic co-load. The cross-decision capacity is, for practical purposes, unbounded *given key-disjointness* — this is a property of the keys, not a theorem about the values. (We say "tens of co-loaded modules holding thousands of facts," not "thousands of modules," to match the measured records.)
 
-- **Within a decision — value-cone degeneracy.** Softmax is winner-take-all and the `lm_head`-row
-  Gram is far from orthogonal, so the number of independently *co-winnable* targets at one decision is
-  small — empirically **≈2**. (Source: a K-target packet probe — at K=2, **at least one of the two
-  installed targets wins the argmax** on all three architectures (Llama 14/15, Mistral 15/15, Qwen
-  11/15) against a **substrate-clean random control** (zero hits across 1,600 random control packets);
-  but the **strict both-win rate is only 3/15 (Llama) / 2/15 (Mistral) / 1/15 (Qwen)** — the
-  readout is **winner-take-all** (K-way competition), *not* additive co-installation, and K≥3 collapses.
-  Corroborated by an in-context K-readability degradation 93.75% (K=4) → 64% (K=6) → 53% (K=8). We report
-  ≈2 as the clean single-decision argmax ceiling.)
+- **Within a decision — value-cone degeneracy.** Softmax is winner-take-all and the `lm_head`-row Gram is far from orthogonal, so the number of independently *co-winnable* targets at one decision is small — empirically **≈2**. (Source: a K-target packet probe — at K=2, **at least one of the two installed targets wins the argmax** on all three architectures (Llama 14/15, Mistral 15/15, Qwen 11/15) against a **substrate-clean random control** (zero hits across 1,600 random control packets); but the **strict both-win rate is only 3/15 (Llama) / 2/15 (Mistral) / 1/15 (Qwen)** — the readout is **winner-take-all** (K-way competition), *not* additive co-installation, and K≥3 collapses. Corroborated by an in-context K-readability degradation 93.75% (K=4) → 64% (K=6) → 53% (K=8). We report ≈2 as the clean single-decision argmax ceiling.)
 
-**Reconciling the two capacity figures.** The single-decision argmax ceiling (≈2) and the
-**entropy-effective rank of the output projection (≈917.83 ≈ 918** on Qwen2.5-7B; stable rank ≈10.04,
-participation ratio ≈93.45, mean |cos| 0.082, p95 0.233) are different quantities, not a
-contradiction: ≈918 is a **spectral property of the output projection `U` alone** (an entropy-effective
-rank), *not* an operational capacity — it bounds nothing we prove here; the across-decision capacity is
-governed by **key-disjointness** (above), not by `U`'s spectrum, while ≈2 counts how many targets can
-*co-win within one* decision. Both are empirical observations. The clean derivation of the ≈2 ceiling
-from the Gram structure of `C` plus softmax saturation, and any exact link to the effective rank, is left
-for future work. We summarize: *capacity is effectively unbounded across key-disjoint decisions and ≈2
-within a single decision — both empirical observations, not a proved bound.*
+**Reconciling the two capacity figures.** The single-decision argmax ceiling (≈2) and the **entropy-effective rank of the output projection (≈917.83 ≈ 918** on Qwen2.5-7B; stable rank ≈10.04, participation ratio ≈93.45, mean |cos| 0.082, p95 0.233) are different quantities, not a contradiction: ≈918 is a **spectral property of the output projection `U` alone** (an entropy-effective rank), *not* an operational capacity — it bounds nothing we prove here; the across-decision capacity is governed by **key-disjointness** (above), not by `U`'s spectrum, while ≈2 counts how many targets can *co-win within one* decision. Both are empirical observations. The clean derivation of the ≈2 ceiling from the Gram structure of `C` plus softmax saturation, and any exact link to the effective rank, is left for future work. We summarize: *capacity is effectively unbounded across key-disjoint decisions and ≈2 within a single decision — both empirical observations, not a proved bound.*
 
 ---
 
 ## 6. The basis-privilege probes (falsification battery)
 
-T1 is *exact* because the stored value is the `lm_head` row (under direct addition; §2). Seven
-falsification probes isolate that the privileged write direction is specifically the
-**output-projection row of the target token**. Each replaces or perturbs the installed value and asks
-whether the install still **flips the argmax**; at the flip level, only the genuine `lm_head` row
-survives (with one important off-axis caveat stated at the end of this section). Figures below are on
-Qwen2.5-7B unless noted. These probes support the *mechanism* reading of T1 — that the privileged
-write direction is the unembedding row — and are not required for the T2 bound, which is purely
-algebraic.
+T1 is *exact* because the stored value is the `lm_head` row (under direct addition; §2). Seven falsification probes isolate that the privileged write direction is specifically the **output-projection row of the target token**. Each replaces or perturbs the installed value and asks whether the install still **flips the argmax**; at the flip level, only the genuine `lm_head` row survives (with one important off-axis caveat stated at the end of this section). Figures below are on Qwen2.5-7B unless noted. These probes support the *mechanism* reading of T1 — that the privileged write direction is the unembedding row — and are not required for the T2 bound, which is purely algebraic.
 
 | # | Probe | Control it kills | Measured outcome |
 |---|-------|------------------|------------------|
@@ -524,58 +230,21 @@ algebraic.
 | 6 | Magnitude | row-norm correlation | recall ⟂ row norm: Pearson r ≈ 0.094, Spearman ρ ≈ 0.167 (norms span 0.52–0.87) |
 | 7 | Effective-rank capacity | — | mean \|cos\| 0.082, median 0.061, p95 0.233; stable rank ≈10.04; participation ratio ≈93.45; **entropy effective rank ≈917.83 (≈918)**; condition # ≈2.2×10⁶ |
 
-**Cross-family.** The 0.940→0.000 paraphrased-recall collapse under random-A reproduces on
-Qwen2.5-7B (L27), Llama-3.1-8B (L30), and Mistral-7B-v0.3 (L30); the strong-form privilege is further
-confirmed on **untied-embedding** Pythia-1.4B and Pythia-12B (canonical +14.07/+14.08 nats, 10/10
-flips, vs random-A +0.37/+0.31; 38×/45×), i.e. 5 architectures / 4 families, 2 verifiably untied. The
-**orthogonal-A control** — projecting the `lm_head[t]` component out and renorming — is a *pre-registered
-4-architecture (Pythia-1.4B / Qwen-7B / Llama-8B / Mistral-7B), 5-seed, cosine-dosage falsification*: it
-collapses the effect to ≈random-A on **4/4 archs** (orth/canonical ratio: Pythia 1.2%, Mistral 5.8%, Llama 18%, Qwen 38%),
-evidence that the privilege rests on the unembedding-readout geometry, i.e. it is exactly the T1
-mechanism and not a residual-stream-internal computation.
+**Cross-family.** The 0.940→0.000 paraphrased-recall collapse under random-A reproduces on Qwen2.5-7B (L27), Llama-3.1-8B (L30), and Mistral-7B-v0.3 (L30); the strong-form privilege is further confirmed on **untied-embedding** Pythia-1.4B and Pythia-12B (canonical +14.07/+14.08 nats, 10/10 flips, vs random-A +0.37/+0.31; 38×/45×), i.e. 5 architectures / 4 families, 2 verifiably untied. The **orthogonal-A control** — projecting the `lm_head[t]` component out and renorming — is a *pre-registered 4-architecture (Pythia-1.4B / Qwen-7B / Llama-8B / Mistral-7B), 5-seed, cosine-dosage falsification*: it collapses the effect to ≈random-A on **4/4 archs** (orth/canonical ratio: Pythia 1.2%, Mistral 5.8%, Llama 18%, Qwen 38%), evidence that the privilege rests on the unembedding-readout geometry, i.e. it is exactly the T1 mechanism and not a residual-stream-internal computation.
 
-**Off-axis caveat (the honest scope of "only `lm_head` survives").** The probes establish privilege *at
-the argmax-flip level*: the orthogonal-A install never flips the target (0/10), and flips track
-`cos(A, lm_head[t])`. They do **not** claim a wrong direction moves the target logit by zero. On
-instruction-tuned, chat-templated models a **norm-matched random install** lifts the target logit by a
-non-trivial amount at large scale (≈+7 nats Qwen, +2.7 Llama, +1 Mistral at ×4; ≈0 on base Pythia), and
-the cosine-dosage is **non-monotone on Llama** (cos=0.7 → +20.4 nats *exceeds* canonical cos=1.0 →
-+13.9). This is a residual *attractor*, not a basis privilege — it decomposes as
-`Δlogp ≈ DLA(cos) + Attractor(√(1−cos²))`, and the orthogonal-A control rules out a non-DLA mechanism on
-all 4 archs. We therefore describe `A = lm_head[t]` as the **maximum-readout-coupling deployment
-direction** (it owns the argmax flip), **not** as a "discovered mechanism."
+**Off-axis caveat (the honest scope of "only `lm_head` survives").** The probes establish privilege *at the argmax-flip level*: the orthogonal-A install never flips the target (0/10), and flips track `cos(A, lm_head[t])`. They do **not** claim a wrong direction moves the target logit by zero. On instruction-tuned, chat-templated models a **norm-matched random install** lifts the target logit by a non-trivial amount at large scale (≈+7 nats Qwen, +2.7 Llama, +1 Mistral at ×4; ≈0 on base Pythia), and the cosine-dosage is **non-monotone on Llama** (cos=0.7 → +20.4 nats *exceeds* canonical cos=1.0 → +13.9). This is a residual *attractor*, not a basis privilege — it decomposes as `Δlogp ≈ DLA(cos) + Attractor(√(1−cos²))`, and the orthogonal-A control rules out a non-DLA mechanism on all 4 archs. We therefore describe `A = lm_head[t]` as the **maximum-readout-coupling deployment direction** (it owns the argmax flip), **not** as a "discovered mechanism."
 
 ![Off-axis attractor](https://raw.githubusercontent.com/orbitnate/readout-regime/main/experiments/04_basis_probes/figures/fig_attractor.png)
 
-> **Figure 2.** *Cosine-dosage of the install direction (norm `mult = 4`; medians over seeds; Appendix
-> B.9).* `Δ log p`(target) vs `cos(A, lm_head[t])`, with `A = c·ê_canon + √(1−c²)·R⊥`. On the **base**
-> model (Pythia-1.4B) the lift is ≈linear in `cos` and ≈0 at `cos=0` — direct logit attribution. On
-> **instruction-tuned, chat-templated** models a norm-matched *random* install (`cos=0`) already lifts the
-> target (+7.4 Qwen / +2.5 Llama / +1.0 Mistral nats) and **Llama is non-monotone** (`cos=0.7` → +20.4
-> *exceeds* canonical `cos=1.0` → +13.9): an off-axis residual attractor,
-> `Δlogp ≈ DLA(cos) + Attractor(√(1−cos²))`. The orthogonal-A control (`cos=0`) never flips the argmax on
-> any architecture, so the *argmax-flip* privilege still belongs to `lm_head[t]`. (Values: the §6
-> cosine-dosage sweep, medians over seeds.)
+> **Figure 2.** *Cosine-dosage of the install direction (norm `mult = 4`; medians over seeds; Appendix B.9).* `Δ log p`(target) vs `cos(A, lm_head[t])`, with `A = c·ê_canon + √(1−c²)·R⊥`. On the **base** model (Pythia-1.4B) the lift is ≈linear in `cos` and ≈0 at `cos=0` — direct logit attribution. On **instruction-tuned, chat-templated** models a norm-matched *random* install (`cos=0`) already lifts the target (+7.4 Qwen / +2.5 Llama / +1.0 Mistral nats) and **Llama is non-monotone** (`cos=0.7` → +20.4 *exceeds* canonical `cos=1.0` → +13.9): an off-axis residual attractor, `Δlogp ≈ DLA(cos) + Attractor(√(1−cos²))`. The orthogonal-A control (`cos=0`) never flips the argmax on any architecture, so the *argmax-flip* privilege still belongs to `lm_head[t]`. (Values: the §6 cosine-dosage sweep, medians over seeds.)
 
 ---
 
 ## 7. The empirical map (split by regime)
 
-We separate evidence at the **final-residual install site** (Tier A — literally eq. (1), the
-final-norm pre-hook, where T1 is exact) from evidence at a **late-layer install site** (Tier B — the
-operating layer L27/L30, with downstream nonlinear blocks still to run). The tiers test different
-things: Tier A tests the exact closed form, while in Tier B the remaining layers *could* in principle
-rescue input-conditional computation. The honest reading of Tier B is an **empirical pattern**, within
-one site, consistent with the readout-regime limit (T2 does not formally govern late-layer installs —
-§10): tasks that need only a **bias** succeed (single-token recall, key-disjoint co-load) while tasks
-that need **computation or chaining** hit the wall. Mixing the tiers would be a category error; each
-row states its injection site.
+We separate evidence at the **final-residual install site** (Tier A — literally eq. (1), the final-norm pre-hook, where T1 is exact) from evidence at a **late-layer install site** (Tier B — the operating layer L27/L30, with downstream nonlinear blocks still to run). The tiers test different things: Tier A tests the exact closed form, while in Tier B the remaining layers *could* in principle rescue input-conditional computation. The honest reading of Tier B is an **empirical pattern**, within one site, consistent with the readout-regime limit (T2 does not formally govern late-layer installs — §10): tasks that need only a **bias** succeed (single-token recall, key-disjoint co-load) while tasks that need **computation or chaining** hit the wall. Mixing the tiers would be a category error; each row states its injection site.
 
-**What is load-bearing.** The two theorems stand *algebraically* — no experiment is required to
-establish T1, T2, or T2′ (Appendix A). The closed-form check (≈5×10⁻⁶) is a sanity test on the
-algebra, not support for the claim. The corollaries C1–C3 are *supported, not proved*, by the tiered
-map below; the capacity figures (§5) are *exploratory* observations. The map exists to show the limit
-**binds in practice**, not to carry the theorem.
+**What is load-bearing.** The two theorems stand *algebraically* — no experiment is required to establish T1, T2, or T2′ (Appendix A). The closed-form check (≈5×10⁻⁶) is a sanity test on the algebra, not support for the claim. The corollaries C1–C3 are *supported, not proved*, by the tiered map below; the capacity figures (§5) are *exploratory* observations. The map exists to show the limit **binds in practice**, not to carry the theorem.
 
 | Claim | Rests on | Role of experiment |
 |---|---|---|
@@ -608,98 +277,30 @@ map below; the capacity figures (§5) are *exploratory* observations. The map ex
 | Mid-layer "read" is bias-equivalent | mid-layer (toy from-scratch CCA substrate) | cosine 0.9918 (≥0.95 kill); combine 2/16 < 0.25 chance; payload-swap 0/3 | C3 (read carries no composable content here) |
 | Hidden second-hop surface | hidden module | ceiling 8/32 | failed construction: positive control fails 8/32, so it cannot distinguish a T2 wall from a broken surface; reported as such, **not** as evidence |
 
-**On the "matched pair."** It is tempting to present the visible-table 32/32 and the hidden-hop 8/32
-as one controlled before/after. They are **two different surfaces**, and the hidden-hop run failed its
-own positive control — so it cannot by itself separate the T2 wall from a broken surface. The honest
-exhibits are: **scaffolded success** = the 272/272 composition (oracle/exact-delta upper bound; clean controls) and the visible-table
-32/32 (passing positive control); **no override** = the readout-wall diagnostic (oracle-correct
-content, +0.016…+0.136 logit, single-hop); **cannot chain** = the single-pass multi-hop bars and the
-mid-layer-read discriminator. The broken hidden-hop surface is reported as such, not as evidence.
+**On the "matched pair."** It is tempting to present the visible-table 32/32 and the hidden-hop 8/32 as one controlled before/after. They are **two different surfaces**, and the hidden-hop run failed its own positive control — so it cannot by itself separate the T2 wall from a broken surface. The honest exhibits are: **scaffolded success** = the 272/272 composition (oracle/exact-delta upper bound; clean controls) and the visible-table 32/32 (passing positive control); **no override** = the readout-wall diagnostic (oracle-correct content, +0.016…+0.136 logit, single-hop); **cannot chain** = the single-pass multi-hop bars and the mid-layer-read discriminator. The broken hidden-hop surface is reported as such, not as evidence.
 
-Reframed across the map: the final-residual installs (Tier A) behave exactly as the closed form
-predicts; and at the late-layer site (Tier B) the same pattern is empirically visible — tasks needing
-only a bias (recall, key-disjoint co-load) succeed, while tasks needing computation or chaining
-(hidden-route composition, single-pass multi-hop) hit the wall.
+Reframed across the map: the final-residual installs (Tier A) behave exactly as the closed form predicts; and at the late-layer site (Tier B) the same pattern is empirically visible — tasks needing only a bias (recall, key-disjoint co-load) succeed, while tasks needing computation or chaining (hidden-route composition, single-pass multi-hop) hit the wall.
 
 ---
 
 ## 8. Related work
 
-**The established landscape.** Two long-standing lines of work read and write the residual stream.
-*Reading:* the logit lens (nostalgebraist, 2020) and tuned lens (Belrose et al., 2023, arXiv:2303.08112)
-decode hidden states through the unembedding; Geva et al. (2021, arXiv:2012.14913; 2022,
-arXiv:2203.14680) read FFN layers as key–value memories projected into vocabulary space. *Writing:*
-activation/representation steering — function vectors (Todd et al., 2024, arXiv:2310.15213; Hendel et
-al., 2023, arXiv:2310.15916) and steering vectors (Turner et al., 2023, arXiv:2308.10248; Zou et al.,
-2023, arXiv:2310.01405; Panickssery et al. / CAA, 2024, arXiv:2312.06681) — adds directions in the
-**representation regime** (mid/early layers), while knowledge editors that *write to weights* via
-gradient-derived rank-one updates (ROME; Meng et al., 2022, arXiv:2202.05262) perform a persistent
-weight edit, not an inference-time additive install. The representation-engineering survey (Bartoszcze
-et al., 2025, arXiv:2502.17601) catalogs *cost-type* risks of steering — performance degradation,
-compute, and steerability — which are resource/quality trade-offs distinct from T2's *structural* limit
-on what can be computed at all. Against this landscape, we characterize *writing in the readout regime*
-(the final residual) and prove its ceiling.
+**The established landscape.** Two long-standing lines of work read and write the residual stream. *Reading:* the logit lens (nostalgebraist, 2020) and tuned lens (Belrose et al., 2023, arXiv:2303.08112) decode hidden states through the unembedding; Geva et al. (2021, arXiv:2012.14913; 2022, arXiv:2203.14680) read FFN layers as key–value memories projected into vocabulary space. *Writing:* activation/representation steering — function vectors (Todd et al., 2024, arXiv:2310.15213; Hendel et al., 2023, arXiv:2310.15916) and steering vectors (Turner et al., 2023, arXiv:2308.10248; Zou et al., 2023, arXiv:2310.01405; Panickssery et al. / CAA, 2024, arXiv:2312.06681) — adds directions in the **representation regime** (mid/early layers), while knowledge editors that *write to weights* via gradient-derived rank-one updates (ROME; Meng et al., 2022, arXiv:2202.05262) perform a persistent weight edit, not an inference-time additive install. The representation-engineering survey (Bartoszcze et al., 2025, arXiv:2502.17601) catalogs *cost-type* risks of steering — performance degradation, compute, and steerability — which are resource/quality trade-offs distinct from T2's *structural* limit on what can be computed at all. Against this landscape, we characterize *writing in the readout regime* (the final residual) and prove its ceiling.
 
-**Closest contemporaneous work (2026).** *Closest mechanism.* Wind (2026), *Prometheus Mind:
-Retrofitting Memory to Frozen Language Models* (arXiv:2601.15324), §4.4.3 ("Identity V"), already uses a
-row of `lm_head` as an attention value and states that "row `i` of `lm_head` is precisely the direction
-that produces high probability for token `i`," injecting `v_memory = α·W_lm[token]/‖W_lm[token]‖·‖h‖`
-into an attention KV pair at one layer for the first generated token. **T1's core observation is
-therefore not new.** Wind has **no** impossibility result, no falsification-probe family, and no
-capacity theory; our contribution is T2 (cone-confinement) + the probes + the capacity observations.
-(Mechanistically Wind injects through attention — hence through `W_O` — vs. our direct final-residual
-install; that is the mechanism axis, while this paper is about the *theory* of the readout regime.)
+**Closest contemporaneous work (2026).** *Closest mechanism.* Wind (2026), *Prometheus Mind: Retrofitting Memory to Frozen Language Models* (arXiv:2601.15324), §4.4.3 ("Identity V"), already uses a row of `lm_head` as an attention value and states that "row `i` of `lm_head` is precisely the direction that produces high probability for token `i`," injecting `v_memory = α·W_lm[token]/‖W_lm[token]‖·‖h‖` into an attention KV pair at one layer for the first generated token. **T1's core observation is therefore not new.** Wind has **no** impossibility result, no falsification-probe family, and no capacity theory; our contribution is T2 (cone-confinement) + the probes + the capacity observations. (Mechanistically Wind injects through attention — hence through `W_O` — vs. our direct final-residual install; that is the mechanism axis, while this paper is about the *theory* of the readout regime.)
 
-*Complementary regime.* Nadaf (2026), *Steerable but Not Decodable: Function Vectors Operate Beyond the
-Logit Lens* (arXiv:2604.02608), shows **empirically** — across 12 tasks, 6 models, and 4,032
-cross-template transfers — that mid-layer function vectors steer behavior *even where the logit lens
-cannot decode the answer at any layer*, with FVs that reach >0.90 steering accuracy still projecting to
-incoherent token distributions ("FVs encode computational instructions rather than answer directions").
-That is precisely a re-ranking effect whose residual is **not** a fixed `lm_head`-row bias — the
-**representation regime**. Nadaf also reports a model-family divergence (Mistral FVs rewrite
-intermediate representations; Llama/Gemma produce near-zero logit-lens changes despite successful
-steering), underscoring that the representation regime's mechanism is *not* the uniform readout-bias our
-T2 characterizes. We supply the closed-form theory of the **complementary readout regime** and prove its
-cone-confinement; cited together, the two describe the two-regime picture of §1/§4.4.
+*Complementary regime.* Nadaf (2026), *Steerable but Not Decodable: Function Vectors Operate Beyond the Logit Lens* (arXiv:2604.02608), shows **empirically** — across 12 tasks, 6 models, and 4,032 cross-template transfers — that mid-layer function vectors steer behavior *even where the logit lens cannot decode the answer at any layer*, with FVs that reach >0.90 steering accuracy still projecting to incoherent token distributions ("FVs encode computational instructions rather than answer directions"). That is precisely a re-ranking effect whose residual is **not** a fixed `lm_head`-row bias — the **representation regime**. Nadaf also reports a model-family divergence (Mistral FVs rewrite intermediate representations; Llama/Gemma produce near-zero logit-lens changes despite successful steering), underscoring that the representation regime's mechanism is *not* the uniform readout-bias our T2 characterizes. We supply the closed-form theory of the **complementary readout regime** and prove its cone-confinement; cited together, the two describe the two-regime picture of §1/§4.4.
 
-*Architecture and empirical axes.* *WriteSAE: Sparse Autoencoders for Recurrent State* (Young, 2026,
-arXiv:2605.12770) independently finds an install→logit closed form for the **recurrent/state-space write
-site**: on Gated DeltaNet a formula in the forget gate, read query, and **output embedding** predicts
-the resulting logit change at `R²=0.98` (88.1% transfer to Mamba-2-370M) — the SSM analogue of T1, where
-the output-embedding row again governs the readout, but with no temperature, cone, capacity, or
-falsification-probe results; it neither scoops T1's transformer-exact form nor T2. Billa (2026,
-arXiv:2604.15557), the *Linear Accessibility Profile*, is an **empirical** predictor of *where* a
-difference-of-means steering vector succeeds (it applies the unembedding to hidden states), with a
-three-regime accessibility taxonomy — complementary to, not overlapping, our *structural* bound. The
-blog essay *The Mechanism of Logit Gap Steering* (toooold.com, 2026-02-09) treats prompt- and
-activation-steering as one operation via an "identity-propagator" view of the residual stream — an
-*approximate* late-layer ≈ logit-bias equivalence using generic difference-of-means vectors, with
-**no** temperature term, **no** impossibility, and **no** capacity bound. (Distinct from the
-similarly-named jailbreak-suffix paper *Logit-Gap Steering*, arXiv:2506.24056, which we do not rely on.)
-We give the *exact* equivalence tied to `lm_head[token]` (which is *why* it is exact), the temperature,
-the impossibility (T2), and the capacity observations.
+*Architecture and empirical axes.* *WriteSAE: Sparse Autoencoders for Recurrent State* (Young, 2026, arXiv:2605.12770) independently finds an install→logit closed form for the **recurrent/state-space write site**: on Gated DeltaNet a formula in the forget gate, read query, and **output embedding** predicts the resulting logit change at `R²=0.98` (88.1% transfer to Mamba-2-370M) — the SSM analogue of T1, where the output-embedding row again governs the readout, but with no temperature, cone, capacity, or falsification-probe results; it neither scoops T1's transformer-exact form nor T2. Billa (2026, arXiv:2604.15557), the *Linear Accessibility Profile*, is an **empirical** predictor of *where* a difference-of-means steering vector succeeds (it applies the unembedding to hidden states), with a three-regime accessibility taxonomy — complementary to, not overlapping, our *structural* bound. The blog essay *The Mechanism of Logit Gap Steering* (toooold.com, 2026-02-09) treats prompt- and activation-steering as one operation via an "identity-propagator" view of the residual stream — an *approximate* late-layer ≈ logit-bias equivalence using generic difference-of-means vectors, with **no** temperature term, **no** impossibility, and **no** capacity bound. (Distinct from the similarly-named jailbreak-suffix paper *Logit-Gap Steering*, arXiv:2506.24056, which we do not rely on.) We give the *exact* equivalence tied to `lm_head[token]` (which is *why* it is exact), the temperature, the impossibility (T2), and the capacity observations.
 
 ---
 
 ## 9. Why it matters: the control reading
 
-T2 is also a control result. A readout install is an **auditable** control: by T1 its effect is a
-removable, composable bias plus a ranking-preserving temperature — unlike fine-tuning or prompting, you
-can write down exactly what it does (the closed form matches direct computation to ≈5×10⁻⁶) and undo it
-bit-exactly. (In the no-norm always-on case the bias is literally input-independent; under
-RMSNorm/LayerNorm with key-addressed attention it is input-modulated through `b_i(x)` and `s(x)` but stays
-confined to the fixed cone — still closed-form and removable, just not a single constant.) But T2 says
-exactly what it *cannot* do, prescribing a two-layer division of labor:
+T2 is also a control result. A readout install is an **auditable** control: by T1 its effect is a removable, composable bias plus a ranking-preserving temperature — unlike fine-tuning or prompting, you can write down exactly what it does (the closed form matches direct computation to ≈5×10⁻⁶) and undo it bit-exactly. (In the no-norm always-on case the bias is literally input-independent; under RMSNorm/LayerNorm with key-addressed attention it is input-modulated through `b_i(x)` and `s(x)` but stays confined to the fixed cone — still closed-form and removable, just not a single constant.) But T2 says exactly what it *cannot* do, prescribing a two-layer division of labor:
 
-- **Put in the readout regime** the jobs that only need to **tip a propensity**: behavior, tone,
-  persona, refusal/anti-targeting, tool-call suppression. These are near-balanced decisions (C2); a
-  fixed cone bias is the right, auditable instrument, and the final-residual evidence (Tier A: the
-  behavioral install) confirms it works there.
-- **Do not put in the readout regime** any job that needs a **hard guarantee** — authorization gates,
-  capability locks, content that must *override* a determined prior or depend on a hidden computed
-  value. By C1/C3 a bounded readout bias offers no override guarantee against a peaked prior and cannot
-  carry a hidden intermediate. Such guarantees require a **deterministic override outside the model**
-  (a gate that does not depend on the model winning a logit race).
+- **Put in the readout regime** the jobs that only need to **tip a propensity**: behavior, tone, persona, refusal/anti-targeting, tool-call suppression. These are near-balanced decisions (C2); a fixed cone bias is the right, auditable instrument, and the final-residual evidence (Tier A: the behavioral install) confirms it works there.
+- **Do not put in the readout regime** any job that needs a **hard guarantee** — authorization gates, capability locks, content that must *override* a determined prior or depend on a hidden computed value. By C1/C3 a bounded readout bias offers no override guarantee against a peaked prior and cannot carry a hidden intermediate. Such guarantees require a **deterministic override outside the model** (a gate that does not depend on the model winning a logit race).
 
 Tip in the readout regime; gate deterministically outside it.
 
@@ -707,116 +308,50 @@ Tip in the readout regime; gate deterministically outside it.
 
 ## 10. Limitations and open work
 
-- **Capacity derivation.** The single-decision ≈2 ceiling is empirical; deriving it from the Gram
-  structure of `C` and softmax saturation, and relating it exactly to the effective rank (≈918), is
-  open.
-- **Late-stack ↔ final-residual.** The closed form bridges a *single* late install to the
-  final-residual object; the multi-slot late-stack case (Tier B) is empirically consistent but not
-  proven to collapse to eq. (1). Either restrict load-bearing claims to final-residual installs
-  (Tier A) or prove the reduction.
-- **The regime distinction is not a lattice.** We prove readout cone-confinement and cite empirical
-  representation-regime computation; a model-independent formal separation (with both a concrete
-  witness and the inclusion direction) is not established and is left open.
-- **W_O / attention-addressed memories.** Lemma 1's exact Gram-column form and the §6 probes assume
-  direct residual addition; the attention-head version stays cone-confined (T2(c)) but its exact bias
-  direction is `U·W_O·U[t]`. A clean treatment of that case would broaden the probe story.
-- **Breadth.** T1/T2 are architecture-general (final-residual + unembedding only); the empirical map
-  is Qwen-centric with cross-family probe support. Replicating the readout-wall (C1) and the
-  single-pass-chain limit (C3) end-to-end on ≥2 more families is high-value.
-- **Reproduction.** Forward-only instrumentation on public checkpoints; every parameter needed to
-  re-derive each reported number is specified in §3, §6, and Appendix B (see *Reproducibility*, below).
+- **Capacity derivation.** The single-decision ≈2 ceiling is empirical; deriving it from the Gram structure of `C` and softmax saturation, and relating it exactly to the effective rank (≈918), is open.
+- **Late-stack ↔ final-residual.** The closed form bridges a *single* late install to the final-residual object; the multi-slot late-stack case (Tier B) is empirically consistent but not proven to collapse to eq. (1). Either restrict load-bearing claims to final-residual installs (Tier A) or prove the reduction.
+- **The regime distinction is not a lattice.** We prove readout cone-confinement and cite empirical representation-regime computation; a model-independent formal separation (with both a concrete witness and the inclusion direction) is not established and is left open.
+- **W_O / attention-addressed memories.** Lemma 1's exact Gram-column form and the §6 probes assume direct residual addition; the attention-head version stays cone-confined (T2(c)) but its exact bias direction is `U·W_O·U[t]`. A clean treatment of that case would broaden the probe story.
+- **Breadth.** T1/T2 are architecture-general (final-residual + unembedding only); the empirical map is Qwen-centric with cross-family probe support. Replicating the readout-wall (C1) and the single-pass-chain limit (C3) end-to-end on ≥2 more families is high-value.
+- **Reproduction.** Forward-only instrumentation on public checkpoints; every parameter needed to re-derive each reported number is specified in §3, §6, and Appendix B (see *Reproducibility*, below).
 
 ---
 
 ## 11. Conclusion
 
-A final-residual additive intervention on a frozen transformer — of which installing a scaled `lm_head`
-row is the exactly-characterizable case — acts on every input as `z̃(x) = s(x)·z(x) + c(x)`: a positive
-scalar temperature plus a re-ranking term drawn from a single fixed, low-dimensional set of directions
-chosen *before any input* (T1, verified to ≈5×10⁻⁶). The content is not the equivalence — which is known
-(Wind, 2026) — but its **structure**: because the re-ranking directions are fixed before the input and
-the addressing weights are non-negative, no input can produce a re-ranking direction outside the
-pre-installed set, however nonlinear the addressor (T2; the measurable form is the affine-rank bound T2′).
-This converts a body of empirical phenomena into corollaries — a bounded install cannot *override* a
-peaked prior, can only *tip* a context-scaffolded near-balanced decision, and cannot *compute or carry* a
-hidden intermediate the addressor does not already expose — and the empirical map shows the limit
-binds in practice: final-residual installs (Tier A) behave exactly as the closed form predicts, and at
-the late-layer site (Tier B) the same pattern is empirically visible — bias-only tasks succeed while
-computation and chaining hit the wall. The control reading is the payoff: the readout regime is the
-right, auditable place for jobs that only need to *tip* a propensity, and the wrong place for any hard
-guarantee, which requires a deterministic override outside the model. The boundary, stated precisely, is
-the contribution.
+A final-residual additive intervention on a frozen transformer — of which installing a scaled `lm_head` row is the exactly-characterizable case — acts on every input as `z̃(x) = s(x)·z(x) + c(x)`: a positive scalar temperature plus a re-ranking term drawn from a single fixed, low-dimensional set of directions chosen *before any input* (T1, verified to ≈5×10⁻⁶). The content is not the equivalence — which is known (Wind, 2026) — but its **structure**: because the re-ranking directions are fixed before the input and the addressing weights are non-negative, no input can produce a re-ranking direction outside the pre-installed set, however nonlinear the addressor (T2; the measurable form is the affine-rank bound T2′). This converts a body of empirical phenomena into corollaries — a bounded install cannot *override* a peaked prior, can only *tip* a context-scaffolded near-balanced decision, and cannot *compute or carry* a hidden intermediate the addressor does not already expose — and the empirical map shows the limit binds in practice: final-residual installs (Tier A) behave exactly as the closed form predicts, and at the late-layer site (Tier B) the same pattern is empirically visible — bias-only tasks succeed while computation and chaining hit the wall. The control reading is the payoff: the readout regime is the right, auditable place for jobs that only need to *tip* a propensity, and the wrong place for any hard guarantee, which requires a deterministic override outside the model. The boundary, stated precisely, is the contribution.
 
 ## Reproducibility
 
-Every result uses publicly available instruction-tuned checkpoints (Qwen2.5-{1.5B,7B,14B,72B},
-Llama-3.1-8B, Mistral-7B-v0.3, Pythia-1.4B/12B) and forward-only instrumentation — standard forward
-hooks; no weights are trained or modified. The paper specifies, for each result, everything needed to
-rebuild it: the exact checkpoint; the install site (final-norm pre-hook vs. late-MLP post-hook) and
-operating layer; the stored value `α·U[t]` and the relative-norm calibration that sets `α`; the metric;
-the decoding setting (greedy/argmax at the install position); and the seeds (Appendix B). T1's closed
-form is a two-forward-pass identity (B.4); the basis-privilege probes are direct value substitutions
-(B.9); the capacity and corollary probes are specified in B.6–B.8; the empirical datasets are named
-where used (MMLU, GSM8K, HumanEval for the no-harm sweep; MQuAKE-CF for the multi-hop chains). Because
-the construction is forward-only and the parameters are given, each reported number is re-derivable from
-the public checkpoints and the procedures in §3, §6, and Appendix B.
+Every result uses publicly available instruction-tuned checkpoints (Qwen2.5-{1.5B,7B,14B,72B}, Llama-3.1-8B, Mistral-7B-v0.3, Pythia-1.4B/12B) and forward-only instrumentation — standard forward hooks; no weights are trained or modified. The paper specifies, for each result, everything needed to rebuild it: the exact checkpoint; the install site (final-norm pre-hook vs. late-MLP post-hook) and operating layer; the stored value `α·U[t]` and the relative-norm calibration that sets `α`; the metric; the decoding setting (greedy/argmax at the install position); and the seeds (Appendix B). T1's closed form is a two-forward-pass identity (B.4); the basis-privilege probes are direct value substitutions (B.9); the capacity and corollary probes are specified in B.6–B.8; the empirical datasets are named where used (MMLU, GSM8K, HumanEval for the no-harm sweep; MQuAKE-CF for the multi-hop chains). Because the construction is forward-only and the parameters are given, each reported number is re-derivable from the public checkpoints and the procedures in §3, §6, and Appendix B.
 
-A companion repository — **https://github.com/orbitnate/readout-regime** (MIT) — provides the authentic
-script and the committed result artifact behind every reported number, plus a model-free check that
-reproduces the T1 identity in seconds (no model or GPU). The closed-form verification (§3), the `lm_head`
-effective-rank measurement (§6), and the K-target capacity probe (§5) are clone-and-run on a single 7B
-checkpoint; the larger cross-scale recall and the Tier-B results ship as the original run artifacts with
-their source scripts. The MIT license covers the code only and grants no patent rights.
+A companion repository — **https://github.com/orbitnate/readout-regime** (MIT) — provides the authentic script and the committed result artifact behind every reported number, plus a model-free check that reproduces the T1 identity in seconds (no model or GPU). The closed-form verification (§3), the `lm_head` effective-rank measurement (§6), and the K-target capacity probe (§5) are clone-and-run on a single 7B checkpoint; the larger cross-scale recall and the Tier-B results ship as the original run artifacts with their source scripts. The MIT license covers the code only and grants no patent rights.
 
 ## Broader impact
 
-This is a theoretical and diagnostic contribution about what a frozen model's readout-space controls can
-and cannot do; it introduces no new capability and uses only public models. Its main practical
-consequence is safety-positive: the impossibility (T2) tells builders *not* to rely on a readout-space
-bias for any hard guarantee — authorization, capability locks, content that must override a determined
-prior — and to place such guarantees in a deterministic mechanism outside the model, reserving the
-readout regime for auditable, removable propensity tips. We note the usual dual-use caveat that any
-characterization of steering can inform both helpful and harmful steering; the result here narrows rather
-than expands what residual-space steering can achieve.
+This is a theoretical and diagnostic contribution about what a frozen model's readout-space controls can and cannot do; it introduces no new capability and uses only public models. Its main practical consequence is safety-positive: the impossibility (T2) tells builders *not* to rely on a readout-space bias for any hard guarantee — authorization, capability locks, content that must override a determined prior — and to place such guarantees in a deterministic mechanism outside the model, reserving the readout regime for auditable, removable propensity tips. We note the usual dual-use caveat that any characterization of steering can inform both helpful and harmful steering; the result here narrows rather than expands what residual-space steering can achieve.
 
 ---
 
 ## References
 
-- **Bartoszcze, L., Munshi, S., Sukidi, B., Yen, J., Yang, Z., Williams-King, D., Le, L., Asuzu, K.,
-  Maple, C.** (2025). *Representation Engineering for Large-Language Models: Survey and Research
-  Challenges.* arXiv:2502.17601.
-- **Belrose, N., Ostrovsky, I., McKinney, L., Furman, Z., Smith, L., Halawi, D., Biderman, S.,
-  Steinhardt, J.** (2023). *Eliciting Latent Predictions from Transformers with the Tuned Lens.*
-  arXiv:2303.08112.
-- **Billa, J.** (2026). *Predicting Where Steering Vectors Succeed* (the Linear Accessibility Profile).
-  arXiv:2604.15557.
-- **Geva, M., Schuster, R., Berant, J., Levy, O.** (2021). *Transformer Feed-Forward Layers Are
-  Key-Value Memories.* EMNLP 2021. arXiv:2012.14913.
-- **Geva, M., Caciularu, A., Wang, K. R., Goldberg, Y.** (2022). *Transformer Feed-Forward Layers
-  Build Predictions by Promoting Concepts in the Vocabulary Space.* EMNLP 2022. arXiv:2203.14680.
-- **Hendel, R., Geva, M., Globerson, A.** (2023). *In-Context Learning Creates Task Vectors.*
-  Findings of EMNLP 2023. arXiv:2310.15916.
-- **Meng, K., Bau, D., Andonian, A., Belinkov, Y.** (2022). *Locating and Editing Factual
-  Associations in GPT* (ROME). NeurIPS 2022. arXiv:2202.05262.
-- **Nadaf, M. S. B.** (2026). *Steerable but Not Decodable: Function Vectors Operate Beyond the Logit
-  Lens.* arXiv:2604.02608.
+- **Bartoszcze, L., Munshi, S., Sukidi, B., Yen, J., Yang, Z., Williams-King, D., Le, L., Asuzu, K., Maple, C.** (2025). *Representation Engineering for Large-Language Models: Survey and Research Challenges.* arXiv:2502.17601.
+- **Belrose, N., Ostrovsky, I., McKinney, L., Furman, Z., Smith, L., Halawi, D., Biderman, S., Steinhardt, J.** (2023). *Eliciting Latent Predictions from Transformers with the Tuned Lens.* arXiv:2303.08112.
+- **Billa, J.** (2026). *Predicting Where Steering Vectors Succeed* (the Linear Accessibility Profile). arXiv:2604.15557.
+- **Geva, M., Schuster, R., Berant, J., Levy, O.** (2021). *Transformer Feed-Forward Layers Are Key-Value Memories.* EMNLP 2021. arXiv:2012.14913.
+- **Geva, M., Caciularu, A., Wang, K. R., Goldberg, Y.** (2022). *Transformer Feed-Forward Layers Build Predictions by Promoting Concepts in the Vocabulary Space.* EMNLP 2022. arXiv:2203.14680.
+- **Hendel, R., Geva, M., Globerson, A.** (2023). *In-Context Learning Creates Task Vectors.* Findings of EMNLP 2023. arXiv:2310.15916.
+- **Meng, K., Bau, D., Andonian, A., Belinkov, Y.** (2022). *Locating and Editing Factual Associations in GPT* (ROME). NeurIPS 2022. arXiv:2202.05262.
+- **Nadaf, M. S. B.** (2026). *Steerable but Not Decodable: Function Vectors Operate Beyond the Logit Lens.* arXiv:2604.02608.
 - **nostalgebraist** (2020). *Interpreting GPT: the Logit Lens.* LessWrong, https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
-- **Panickssery, N., Gabrieli, N., Schulz, J., Tong, M., Hubinger, E., Turner, A. M.** (2024).
-  *Steering Llama 2 via Contrastive Activation Addition.* ACL 2024. arXiv:2312.06681.
-- **Todd, E., Li, M. L., Sen Sharma, A., Mueller, A., Wallace, B. C., Bau, D.** (2024). *Function
-  Vectors in Large Language Models.* ICLR 2024. arXiv:2310.15213.
-- **Turner, A. M., Thiergart, L., Leech, G., Udell, D., Vazquez, J. J., Mini, U., MacDiarmid, M.**
-  (2023). *Activation Addition: Steering Language Models Without Optimization.* arXiv:2308.10248.
-- **Wind, M.** (2026). *Prometheus Mind: Retrofitting Memory to Frozen Language Models.*
-  arXiv:2601.15324.
+- **Panickssery, N., Gabrieli, N., Schulz, J., Tong, M., Hubinger, E., Turner, A. M.** (2024). *Steering Llama 2 via Contrastive Activation Addition.* ACL 2024. arXiv:2312.06681.
+- **Todd, E., Li, M. L., Sen Sharma, A., Mueller, A., Wallace, B. C., Bau, D.** (2024). *Function Vectors in Large Language Models.* ICLR 2024. arXiv:2310.15213.
+- **Turner, A. M., Thiergart, L., Leech, G., Udell, D., Vazquez, J. J., Mini, U., MacDiarmid, M.** (2023). *Activation Addition: Steering Language Models Without Optimization.* arXiv:2308.10248.
+- **Wind, M.** (2026). *Prometheus Mind: Retrofitting Memory to Frozen Language Models.* arXiv:2601.15324.
 - **Young, J.** (2026). *WriteSAE: Sparse Autoencoders for Recurrent State.* arXiv:2605.12770.
-- **Zou, A., Phan, L., Chen, S., Campbell, J., et al.** (2023). *Representation Engineering: A
-  Top-Down Approach to AI Transparency.* arXiv:2310.01405.
-- *The Mechanism of Logit Gap Steering: A Unified View of Prompts, Vectors, and Low-Rank Adaptation.*
-  (2026). Blog essay, toooold.com, 2026-02-09.
-- *Logit-Gap Steering* (jailbreak-suffix attack). (2025). arXiv:2506.24056. Cited only to
-  disambiguate from the essay above; not relied upon.
+- **Zou, A., Phan, L., Chen, S., Campbell, J., et al.** (2023). *Representation Engineering: A Top-Down Approach to AI Transparency.* arXiv:2310.01405.
+- *The Mechanism of Logit Gap Steering: A Unified View of Prompts, Vectors, and Low-Rank Adaptation.* (2026). Blog essay, toooold.com, 2026-02-09.
+- *Logit-Gap Steering* (jailbreak-suffix attack). (2025). arXiv:2506.24056. Cited only to disambiguate from the essay above; not relied upon.
 
 ---
 
@@ -824,22 +359,11 @@ than expands what residual-space steering can achieve.
 
 **A.1 Lemma 1.** `U(h+Δ) = z + UΔ`, `UΔ = Σ a_i α_i U U[t_i] = Σ a_i α_i g_{t_i}`. ∎
 
-**A.2 Lemma 2.** `g_{t_i} = U U[t_i] ∈ col(U)`. The set `{Σ_i a_iα_i g_{t_i} : a_i ≥ 0}` is the
-convex cone over the **signed installed generators** `{α_i g_{t_i}}`: if all `α_i ≥ 0` it is
-`cone{g_{t_i}}`; if some `α_i < 0` it is the cone over those signed generators, whose linear span is
-contained in `span{g_{t_i}}` (dimension `≤ m`) and equals the full subspace `span{g_{t_i}}` **only
-if** the installed set supplies enough opposite-signed directions. In all cases `dim span ≤ m`. All of
-`(U,{t_i},{α_i})` are fixed before input. ∎
+**A.2 Lemma 2.** `g_{t_i} = U U[t_i] ∈ col(U)`. The set `{Σ_i a_iα_i g_{t_i} : a_i ≥ 0}` is the convex cone over the **signed installed generators** `{α_i g_{t_i}}`: if all `α_i ≥ 0` it is `cone{g_{t_i}}`; if some `α_i < 0` it is the cone over those signed generators, whose linear span is contained in `span{g_{t_i}}` (dimension `≤ m`) and equals the full subspace `span{g_{t_i}}` **only if** the installed set supplies enough opposite-signed directions. In all cases `dim span ≤ m`. All of `(U,{t_i},{α_i})` are fixed before input. ∎
 
-**A.3 T2(a)/(b).** No-norm always-on: `z̃ = z + b`, `b = Σ α_i g_{t_i}` fixed;
-`softmax(z+b)_j = p_j e^{b_j}/Σ_k p_k e^{b_k}` depends on `x` only through `p(x)`; equal `p` ⇒ equal
-output. Gap `z̃_j−z̃_k = s(x)(z_j−z_k)+(c_j(x)−c_k(x))`, `c(x)∈C` (Lemmas 1/3/4); `s≡1`, `c` constant
-in the no-norm always-on case. ∎
+**A.3 T2(a)/(b).** No-norm always-on: `z̃ = z + b`, `b = Σ α_i g_{t_i}` fixed; `softmax(z+b)_j = p_j e^{b_j}/Σ_k p_k e^{b_k}` depends on `x` only through `p(x)`; equal `p` ⇒ equal output. Gap `z̃_j−z̃_k = s(x)(z_j−z_k)+(c_j(x)−c_k(x))`, `c(x)∈C` (Lemmas 1/3/4); `s≡1`, `c` constant in the no-norm always-on case. ∎
 
-**A.4 T2(c) and T2′.** By Lemmas 3/4, `z̃(x) = s(x)z(x) + c(x)`, `c(x) = Σ_i b_i(x)u_{t_i} ∈ C`,
-`dim span(C) ≤ m`, `C` fixed before input; `s(x)>0` preserves the ranking of `z(x)`; an attention sink
-gives `Σ a_i ≤ 1`, keeping `c(x)∈C`. Hence `d(x) := z̃(x)−s(x)z(x) = c(x) ∈ C` for all `x`, so the
-affine dimension of `{d(x)}` is `≤ dim span(C) ≤ m`. ∎
+**A.4 T2(c) and T2′.** By Lemmas 3/4, `z̃(x) = s(x)z(x) + c(x)`, `c(x) = Σ_i b_i(x)u_{t_i} ∈ C`, `dim span(C) ≤ m`, `C` fixed before input; `s(x)>0` preserves the ranking of `z(x)`; an attention sink gives `Σ a_i ≤ 1`, keeping `c(x)∈C`. Hence `d(x) := z̃(x)−s(x)z(x) = c(x) ∈ C` for all `x`, so the affine dimension of `{d(x)}` is `≤ dim span(C) ≤ m`. ∎
 
 *(No `∎` is claimed for any `G_read ⊆ G_repr` / `⊊` statement; per §4.4 the lattice is not asserted.)*
 
@@ -847,71 +371,24 @@ affine dimension of `{d(x)}` is `≤ dim span(C) ≤ m`. ∎
 
 ## Appendix B. Experimental details
 
-All experiments use publicly available instruction-tuned checkpoints and standard forward-pass
-instrumentation (forward hooks); no weights are trained or modified. We describe each measurement in
-enough detail to reproduce it from the public model alone.
+All experiments use publicly available instruction-tuned checkpoints and standard forward-pass instrumentation (forward hooks); no weights are trained or modified. We describe each measurement in enough detail to reproduce it from the public model alone.
 
-**B.1 Models.** Qwen2.5-7B-Instruct (28 layers, hidden 3584, vocab 152064, RMSNorm,
-`tie_word_embeddings=False`); Llama-3.1-8B-Instruct; Mistral-7B-Instruct-v0.3; Pythia-1.4B and
-Pythia-12B (both with untied input/output embeddings). All use a final RMSNorm followed by the
-unembedding `lm_head`, except where the LayerNorm analysis of Lemma 4 is invoked.
+**B.1 Models.** Qwen2.5-7B-Instruct (28 layers, hidden 3584, vocab 152064, RMSNorm, `tie_word_embeddings=False`); Llama-3.1-8B-Instruct; Mistral-7B-Instruct-v0.3; Pythia-1.4B and Pythia-12B (both with untied input/output embeddings). All use a final RMSNorm followed by the unembedding `lm_head`, except where the LayerNorm analysis of Lemma 4 is invoked.
 
-**B.2 Install sites.** Two sites are used and always reported per result. *(i) Final residual:* a
-pre-hook on the final normalization layer adds the install vector to the last-position residual
-immediately before normalization, so it reaches `lm_head` through the norm only — this is the
-direct-addition object of eq. (1) (Tier A). *(ii) Late MLP down-projection:* a post-hook on a
-selected layer's MLP down-projection adds the install to that layer's output, after which the
-remaining blocks run normally (Tier B). The operating layer for (ii) is the layer maximizing the
-basis-privilege gap of §6 (e.g. L27 on Qwen, L30 on Llama/Mistral).
+**B.2 Install sites.** Two sites are used and always reported per result. *(i) Final residual:* a pre-hook on the final normalization layer adds the install vector to the last-position residual immediately before normalization, so it reaches `lm_head` through the norm only — this is the direct-addition object of eq. (1) (Tier A). *(ii) Late MLP down-projection:* a post-hook on a selected layer's MLP down-projection adds the install to that layer's output, after which the remaining blocks run normally (Tier B). The operating layer for (ii) is the layer maximizing the basis-privilege gap of §6 (e.g. L27 on Qwen, L30 on Llama/Mistral).
 
-**B.3 Install value and scale.** The stored value is `α·U[t]`, the scaled `lm_head` row of target
-token `t`; for the K-target and edit constructions it is a sum/difference of such rows. `α` is set by
-a relative-norm calibration (so the added vector's norm is a fixed fraction of the host residual norm
-at the install position); the per-model `α` operating points reported in §7 are stated inline with
-each result (e.g. the any-token and behavioral installs use the saturating regime).
+**B.3 Install value and scale.** The stored value is `α·U[t]`, the scaled `lm_head` row of target token `t`; for the K-target and edit constructions it is a sum/difference of such rows. `α` is set by a relative-norm calibration (so the added vector's norm is a fixed fraction of the host residual norm at the install position); the per-model `α` operating points reported in §7 are stated inline with each result (e.g. the any-token and behavioral installs use the saturating regime).
 
-**B.4 Closed-form verification (Lemma 3, T1).** For random prompts, we collect the last-position
-final-layer residual `h`, compute the predicted bias `b_pred = (α/r')·u_t + ((r−r')/(r·r'))·U(γ⊙h)`
-(with `r,r'` the RMSNorm denominators before/after install, `u_t = U(γ⊙U[t])`), and compare to the
-*direct* bias `b_dir = logits(h+α U[t]) − logits(h)` obtained by two forward evaluations. We report
-`max|b_pred − b_dir|` over the vocabulary and prompts (4.77×10⁻⁶ Mistral at α=24, 7.15×10⁻⁶ Qwen at
-α=64), the fraction of `‖b_dir‖` carried by the rank-1 term (median 96.1% on Mistral, 96.83% on Qwen),
-and that the rescale term leaves the argmax unchanged.
+**B.4 Closed-form verification (Lemma 3, T1).** For random prompts, we collect the last-position final-layer residual `h`, compute the predicted bias `b_pred = (α/r')·u_t + ((r−r')/(r·r'))·U(γ⊙h)` (with `r,r'` the RMSNorm denominators before/after install, `u_t = U(γ⊙U[t])`), and compare to the *direct* bias `b_dir = logits(h+α U[t]) − logits(h)` obtained by two forward evaluations. We report `max|b_pred − b_dir|` over the vocabulary and prompts (4.77×10⁻⁶ Mistral at α=24, 7.15×10⁻⁶ Qwen at α=64), the fraction of `‖b_dir‖` carried by the rank-1 term (median 96.1% on Mistral, 96.83% on Qwen), and that the rescale term leaves the argmax unchanged.
 
-**B.5 A falsification recipe for "is this intervention a readout install?" (T2′).** Corollary T2′ is a
-*proven* bound (Appendix A.4): a readout install's re-ranking residual at the structural temperature has
-affine rank ≤ m by construction, so measuring *that* is tautological and we do not report it as evidence.
-The useful, falsifiable test runs the other way — on an intervention of *unknown* type: record the
-installed logits `z̃(x)` and base logits `z(x)`, form `d(x) = z̃(x) − s(x)z(x)` at the **structural**
-temperature `s(x) = r(h(x))/r(h̃(x))` (Lemma 3 — **not** a least-squares fit, which would absorb part of
-`c(x)` and inflate the rank), and report the affine rank of `{d(x)}`. An intervention whose residual rank
-exceeds its slot count `m` is **not** realizable as an m-slot readout install. The natural application —
-measuring a mid-layer representation intervention's residual rank to confirm it *exceeds* the readout
-bound, turning the two-regime separation of §4.4 from cited into measured — is left to future work.
+**B.5 A falsification recipe for "is this intervention a readout install?" (T2′).** Corollary T2′ is a *proven* bound (Appendix A.4): a readout install's re-ranking residual at the structural temperature has affine rank ≤ m by construction, so measuring *that* is tautological and we do not report it as evidence. The useful, falsifiable test runs the other way — on an intervention of *unknown* type: record the installed logits `z̃(x)` and base logits `z(x)`, form `d(x) = z̃(x) − s(x)z(x)` at the **structural** temperature `s(x) = r(h(x))/r(h̃(x))` (Lemma 3 — **not** a least-squares fit, which would absorb part of `c(x)` and inflate the rank), and report the affine rank of `{d(x)}`. An intervention whose residual rank exceeds its slot count `m` is **not** realizable as an m-slot readout install. The natural application — measuring a mid-layer representation intervention's residual rank to confirm it *exceeds* the readout bound, turning the two-regime separation of §4.4 from cited into measured — is left to future work.
 
-**B.6 Bounded-override probe (C1).** With the install direction set to the oracle-correct
-`lm_head[target]` (cosine ≈ 1.0 with the target row), we sweep the scale (×1…×8) at the final-residual
-install and report the change in the target-token logit and whether the argmax flips; under bounded
-calibration the target logit moves by only +0.016…+0.136 and the peaked prior does not flip.
+**B.6 Bounded-override probe (C1).** With the install direction set to the oracle-correct `lm_head[target]` (cosine ≈ 1.0 with the target row), we sweep the scale (×1…×8) at the final-residual install and report the change in the target-token logit and whether the argmax flips; under bounded calibration the target logit moves by only +0.016…+0.136 and the peaked prior does not flip.
 
-**B.7 K-target competition (§5).** We co-install `K` target rows at one final-residual position and
-report, per architecture, the **≥1-of-2-wins** rate and the **strict both-win** rate at K=2 (and the
-K≥3 collapse), each against a norm-matched random-row control (zero hits across 1,600 random control packets).
-The readout is winner-take-all, so co-installed rows compete rather than add.
+**B.7 K-target competition (§5).** We co-install `K` target rows at one final-residual position and report, per architecture, the **≥1-of-2-wins** rate and the **strict both-win** rate at K=2 (and the K≥3 collapse), each against a norm-matched random-row control (zero hits across 1,600 random control packets). The readout is winner-take-all, so co-installed rows compete rather than add.
 
-**B.8 Co-load additivity (§5).** We load up to 43 single-fact modules (≈2,580 facts) addressed by
-disjoint keys, and report the per-module recall solo vs. co-loaded (Δ at the 95th percentile), the
-perplexity change against the unmodified model on held-out text (`Δppl`), and idempotence of
-load/unload.
+**B.8 Co-load additivity (§5).** We load up to 43 single-fact modules (≈2,580 facts) addressed by disjoint keys, and report the per-module recall solo vs. co-loaded (Δ at the 95th percentile), the perplexity change against the unmodified model on held-out text (`Δppl`), and idempotence of load/unload.
 
-**B.9 Basis-privilege probes (§6).** Each probe replaces the install value with a control (random
-vector at matched norm; random vector in the top-k right-singular subspace; wrong-token row; input
-embedding row; row at a different layer; row scaled across the norm range) and reports recall vs. the
-genuine `lm_head` row. The effective-rank measurement (probe 7) samples vocabulary rows, forms the
-row matrix, and reports pairwise |cos| statistics and the singular-spectrum measures (stable rank,
-participation ratio, entropy effective rank) of the output projection.
+**B.9 Basis-privilege probes (§6).** Each probe replaces the install value with a control (random vector at matched norm; random vector in the top-k right-singular subspace; wrong-token row; input embedding row; row at a different layer; row scaled across the norm range) and reports recall vs. the genuine `lm_head` row. The effective-rank measurement (probe 7) samples vocabulary rows, forms the row matrix, and reports pairwise |cos| statistics and the singular-spectrum measures (stable rank, participation ratio, entropy effective rank) of the output projection.
 
-**B.10 Decoding and seeds.** Unless a probe specifies otherwise, scoring is greedy/argmax at the
-install position; the readout-modifier sensitivity of T1 (argmax-preserving vs. tail-sensitive
-readouts) is reported separately. Probes that draw random prompts or random control directions fix a
-seed per run; the reported figures are stable across the seeds used.
+**B.10 Decoding and seeds.** Unless a probe specifies otherwise, scoring is greedy/argmax at the install position; the readout-modifier sensitivity of T1 (argmax-preserving vs. tail-sensitive readouts) is reported separately. Probes that draw random prompts or random control directions fix a seed per run; the reported figures are stable across the seeds used.
