@@ -545,7 +545,7 @@ the cosine-dosage is **non-monotone on Llama** (cos=0.7 → +20.4 nats *exceeds*
 all 4 archs. We therefore describe `A = lm_head[t]` as the **maximum-readout-coupling deployment
 direction** (it owns the argmax flip), **not** as a "discovered mechanism."
 
-![Off-axis attractor](figures/fig_attractor.png)
+![Off-axis attractor](https://raw.githubusercontent.com/orbitnate/readout-regime/main/experiments/04_basis_probes/figures/fig_attractor.png)
 
 > **Figure 2.** *Cosine-dosage of the install direction (norm `mult = 4`; medians over seeds; Appendix
 > B.9).* `Δ log p`(target) vs `cos(A, lm_head[t])`, with `A = c·ê_canon + √(1−c²)·R⊥`. On the **base**
