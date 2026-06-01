@@ -2,6 +2,7 @@
 
 **Nathan Lee Peterson**
 Independent researcher · Correspondence: orbitnate@gmail.com
+Code and result artifacts: https://github.com/orbitnate/readout-regime
 
 ---
 
@@ -759,6 +760,13 @@ form is a two-forward-pass identity (B.4); the basis-privilege probes are direct
 where used (MMLU, GSM8K, HumanEval for the no-harm sweep; MQuAKE-CF for the multi-hop chains). Because
 the construction is forward-only and the parameters are given, each reported number is re-derivable from
 the public checkpoints and the procedures in §3, §6, and Appendix B.
+
+A companion repository — **https://github.com/orbitnate/readout-regime** (MIT) — provides the authentic
+script and the committed result artifact behind every reported number, plus a model-free check that
+reproduces the T1 identity in seconds (no model or GPU). The closed-form verification (§3), the `lm_head`
+effective-rank measurement (§6), and the K-target capacity probe (§5) are clone-and-run on a single 7B
+checkpoint; the larger cross-scale recall and the Tier-B results ship as the original run artifacts with
+their source scripts. The MIT license covers the code only and grants no patent rights.
 
 ## Broader impact
 
