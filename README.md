@@ -152,6 +152,14 @@ verbatim from the paper (see §4–§7) so they are not lost in the code:
 }
 ```
 
-## License
+## License and patents
 
-MIT — see [LICENSE](LICENSE). Uses only public model checkpoints; trains nothing.
+The **source code** in this repository is released under the [MIT License](LICENSE):
+you may read, run, reproduce, modify, and share it. It uses only public model
+checkpoints and trains nothing.
+
+**Patent notice.** The methods and techniques described in the accompanying paper and
+embodied in this code may be covered by pending or granted patents. The MIT license
+covers this **source code only** and **does not grant any license, express or implied,
+to those patents.** Parties intending to use the patented methods commercially should
+contact the author for a separate patent license.
