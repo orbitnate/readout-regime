@@ -17,6 +17,7 @@
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf}
 \usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{xurl}
 
 % --- theorem environments (match the conversion spec) ---
 \theoremstyle{plain}
@@ -29,6 +30,7 @@
 \setlength{\parskip}{0.35em}
 \setlist{nosep,leftmargin=1.4em}
 \hyphenpenalty=2000
+\setlength{\emergencystretch}{3em}
 
 \title{\bfseries The Readout Regime:\\ A Normal Form for Final-Residual Control of Frozen Transformers\\ --- and Its Capacity Limits}
 \author{Nathan Lee Peterson\\[2pt]
@@ -124,7 +126,9 @@ $d(x) = \tilde z(x) - s(x) z(x)$ & re-ranking residual (Corollary T2$^{\prime}$)
 \end{tabular}
 \end{table}
 
-\textbf{The readout-regime install.} A readout install is a finite set of \emph{slots} $S = \{(t_1,K_1,\alpha_1), \dots, (t_m,K_m,\alpha_m)\}$, where slot $i$ stores value $V_i = \alpha_i \cdot U[t_i]$ (a scaled \texttt{lm\_head} row; the scale $\alpha_i \in \mathbb{R}$ is fixed before any input) and key $K_i$. At decode, a query $q(x)$ (an input-addressing read of the current residual stream) produces \textbf{non-negative} weights $a_i(x) \ge 0$ over the slots (e.g.\ a softmax over $\langle q(x),K_i\rangle$, optionally with an attention sink so $\sum_i a_i \le 1$), and the install adds to the final residual, before $N$:
+\textbf{The readout-regime install.} A readout install is a finite set of \emph{slots}
+\[ S = \{(t_1,K_1,\alpha_1), \dots, (t_m,K_m,\alpha_m)\}, \]
+where slot $i$ stores value $V_i = \alpha_i \cdot U[t_i]$ (a scaled \texttt{lm\_head} row; the scale $\alpha_i \in \mathbb{R}$ is fixed before any input) and key $K_i$. At decode, a query $q(x)$ (an input-addressing read of the current residual stream) produces \textbf{non-negative} weights $a_i(x) \ge 0$ over the slots (e.g.\ a softmax over $\langle q(x),K_i\rangle$, optionally with an attention sink so $\sum_i a_i \le 1$), and the install adds to the final residual, before $N$:
 
 \begin{equation}\tag{1}
 \Delta(x) = \sum_{i=1}^{m} a_i(x) \cdot V_i = \sum_i a_i(x) \cdot \alpha_i \cdot U[t_i] \in \mathbb{R}^{d},
@@ -370,7 +374,7 @@ K-target competition & final residual & $\ge$1-of-2 wins: Llama 14/15, Mistral 1
 \subsection*{Tier B --- late-layer installs (downstream nonlinearity available; bias-tasks pass, compute-tasks wall)}
 
 {\footnotesize
-\begin{longtable}{p{2.7cm}p{1.9cm}p{5.0cm}p{2.6cm}}
+\begin{longtable}{p{2.6cm}p{2.3cm}p{4.8cm}p{2.6cm}}
 \toprule
 Observation & Injection site & Decisive numbers & Supports / caveat \\
 \midrule
@@ -476,7 +480,7 @@ This is a theoretical and diagnostic contribution about what a frozen model's re
 
 All experiments use publicly available instruction-tuned checkpoints and standard forward-pass instrumentation (forward hooks); no weights are trained or modified. We describe each measurement in enough detail to reproduce it from the public model alone.
 
-\textbf{B.1 Models.} Qwen2.5-7B-Instruct (28 layers, hidden 3584, vocab 152064, RMSNorm, \texttt{tie\_word\_embeddings=False}); Llama-3.1-8B-Instruct; Mistral-7B-Instruct-v0.3; Pythia-1.4B and Pythia-12B (both with untied input/output embeddings). All use a final RMSNorm followed by the unembedding \texttt{lm\_head}, except where the LayerNorm analysis of Lemma 4 is invoked.
+\textbf{B.1 Models.} Qwen2.5-7B-Instruct (28 layers, hidden 3584, vocab 152064, RMSNorm, \texttt{tie\_\allowbreak word\_\allowbreak embeddings\allowbreak =False}); Llama-3.1-8B-Instruct; Mistral-7B-Instruct-v0.3; Pythia-1.4B and Pythia-12B (both with untied input/output embeddings). All use a final RMSNorm followed by the unembedding \texttt{lm\_head}, except where the LayerNorm analysis of Lemma 4 is invoked.
 
 \textbf{B.2 Install sites.} Two sites are used and always reported per result. \emph{(i) Final residual:} a pre-hook on the final normalization layer adds the install vector to the last-position residual immediately before normalization, so it reaches \texttt{lm\_head} through the norm only --- this is the direct-addition object of eq.~(1) (Tier A). \emph{(ii) Late MLP down-projection:} a post-hook on a selected layer's MLP down-projection adds the install to that layer's output, after which the remaining blocks run normally (Tier B). The operating layer for (ii) is the layer maximizing the basis-privilege gap of \S6 (e.g. L27 on Qwen, L30 on Llama/Mistral).
 
