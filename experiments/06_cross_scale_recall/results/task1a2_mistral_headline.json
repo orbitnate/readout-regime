@@ -1,0 +1,1567 @@
+{
+  "config": {
+    "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+    "layer_idx": 30,
+    "scale": 0.5,
+    "slot_counts": [
+      10,
+      25,
+      50
+    ],
+    "n_seeds": 3,
+    "base_seed": 0,
+    "ablations": [
+      "zero",
+      "random_B",
+      "oracle_gate",
+      "full"
+    ],
+    "query_types": [
+      "literal",
+      "paraphrased",
+      "abstract",
+      "task"
+    ],
+    "train_specs": [
+      "literal",
+      "abstract",
+      "task"
+    ],
+    "encoder_id": "sentence-transformers/all-MiniLM-L6-v2",
+    "n_clean_facts": 60,
+    "verified_kb": "results/expH/task1a2_mistral_base_ignorance.json"
+  },
+  "buckets": [
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 9,
+      "hit_zero": 0,
+      "rho": 0.9
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 9,
+      "hit_zero": 0,
+      "rho": 0.9
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 9,
+      "hit_zero": 0,
+      "rho": 0.9
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 0,
+      "n": 10,
+      "hit_mem": 9,
+      "hit_zero": 0,
+      "rho": 0.9
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 1,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 10,
+      "ablation": "full",
+      "seed": 2,
+      "n": 10,
+      "hit_mem": 10,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 0,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 24,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 1,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 24,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 24,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 25,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 24,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 24,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "task",
+      "slot_count": 25,
+      "ablation": "full",
+      "seed": 2,
+      "n": 25,
+      "hit_mem": 24,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 48,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 47,
+      "hit_zero": 0,
+      "rho": 0.94
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 0,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 47,
+      "hit_zero": 0,
+      "rho": 0.94
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 1,
+      "n": 50,
+      "hit_mem": 48,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "zero",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "random_B",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 0,
+      "hit_zero": 0,
+      "rho": 0.0
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "oracle_gate",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "literal",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 50,
+      "hit_zero": 0,
+      "rho": 1.0
+    },
+    {
+      "query_type": "paraphrased",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 48,
+      "hit_zero": 0,
+      "rho": 0.96
+    },
+    {
+      "query_type": "abstract",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    },
+    {
+      "query_type": "task",
+      "slot_count": 50,
+      "ablation": "full",
+      "seed": 2,
+      "n": 50,
+      "hit_mem": 49,
+      "hit_zero": 0,
+      "rho": 0.98
+    }
+  ],
+  "summary_mean_rho": {
+    "zero": {
+      "literal": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      },
+      "paraphrased": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      },
+      "abstract": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      },
+      "task": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      }
+    },
+    "random_B": {
+      "literal": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      },
+      "paraphrased": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      },
+      "abstract": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      },
+      "task": {
+        "10": 0.0,
+        "25": 0.0,
+        "50": 0.0
+      }
+    },
+    "oracle_gate": {
+      "literal": {
+        "10": 1.0,
+        "25": 1.0,
+        "50": 1.0
+      },
+      "paraphrased": {
+        "10": 1.0,
+        "25": 1.0,
+        "50": 1.0
+      },
+      "abstract": {
+        "10": 0.9666666666666667,
+        "25": 0.9866666666666667,
+        "50": 0.98
+      },
+      "task": {
+        "10": 0.9666666666666667,
+        "25": 0.9866666666666667,
+        "50": 0.98
+      }
+    },
+    "full": {
+      "literal": {
+        "10": 1.0,
+        "25": 1.0,
+        "50": 0.9866666666666667
+      },
+      "paraphrased": {
+        "10": 1.0,
+        "25": 0.9733333333333333,
+        "50": 0.9466666666666667
+      },
+      "abstract": {
+        "10": 0.9666666666666667,
+        "25": 0.9866666666666667,
+        "50": 0.98
+      },
+      "task": {
+        "10": 0.9666666666666667,
+        "25": 0.9866666666666667,
+        "50": 0.9733333333333333
+      }
+    }
+  },
+  "wall_seconds": 1622.2
+}

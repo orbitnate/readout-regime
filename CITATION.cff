@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this code or the accompanying paper, please cite it as below."
+title: "The Readout Regime: A Normal Form for Final-Residual Control of Frozen Transformers — and Its Capacity Limits"
+abstract: >-
+  Companion code and result artifacts for the Readout Regime paper. A
+  final-residual additive intervention on a frozen transformer acts on every
+  input as a positive scalar temperature plus a re-ranking bias confined to a
+  fixed, low-dimensional cone chosen before any input (T1, T2). This repository
+  reproduces the empirical map: the closed-form verification, the basis-privilege
+  probes, the K-target capacity ceiling, the cross-scale recall, and the Tier-B
+  walls.
+type: software
+authors:
+  - family-names: Peterson
+    given-names: Nathan Lee
+    email: orbitnate@gmail.com
+year: 2026
+date-released: 2026-06-01
+version: "1.0.0"
+license: MIT
+keywords:
+  - frozen transformers
+  - inference-time intervention
+  - logit bias
+  - mechanistic interpretability
+  - activation steering

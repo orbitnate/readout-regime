@@ -1,0 +1,2035 @@
+{
+  "meta": {
+    "llama_model": "NousResearch/Meta-Llama-3.1-8B-Instruct",
+    "mistral_model": "mistralai/Mistral-7B-Instruct-v0.3",
+    "tau": 10,
+    "n_mistral_continuation": 25,
+    "n_cases": 50,
+    "seed": 13,
+    "gate_bar": 0.7,
+    "first_k_content": 10,
+    "probe_version": "framing2_gate_v1"
+  },
+  "llama_self_rates": {
+    "gold_substring_norm": 0.1,
+    "gold_first10_first2piece": 0.02,
+    "gold_first10_firstpiece": 0.04,
+    "gold_at_cont_token_1": 0.02
+  },
+  "mistral_natural_rates": {
+    "gold_substring_norm": 0.12,
+    "gold_first10_first2piece": 0.02,
+    "gold_first10_firstpiece": 0.06,
+    "gold_at_cont_token_1": 0.02
+  },
+  "mistral_oracle_rates": {
+    "gold_substring_norm": 0.26,
+    "gold_first10_first2piece": 0.1,
+    "gold_first10_firstpiece": 0.28,
+    "gold_at_cont_token_1": 0.24
+  },
+  "verdict": "FRAMING2_DEAD_BOTH_FAIL",
+  "verdict_line": "Neither model produces hop-2 reliably. Substratum or models unsuitable.",
+  "records": [
+    {
+      "case_id": "1759",
+      "chain_prompt": "Which country is the origin of the genre associated with the performer Nature Boy?\nAnswer:",
+      "old_bridge": "Nat King Cole",
+      "old_answer": "United States of America",
+      "llama_tau_emitted": " South Africa\nExplanation: The genre associated with the",
+      "llama_self_continuation": " performer Nature Boy is Kwaito, which originated in South Africa. Kwaito is a genre of music that emerged in",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 49254,
+        "first_piece_id": 3723,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "performer Nature Boy is Jazz, and he is of South African origin.\n\nQuestion 10: Which country is",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 2993,
+        "first_piece_id": 3737,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "United States.\n\n10. Which country is the origin of the genre associated with the performer The Girl from I",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 3737,
+        "first_piece_id": 3737,
+        "match_pos_first2piece": 0,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1179",
+      "chain_prompt": "Where was the person who founded the religion of Leo I born?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " The person who founded the religion of Leo I was",
+      "llama_self_continuation": " born in Rome, Italy.\nWhat was the name of the first Christian emperor of the Eastern Roman Empire?\nAnswer: The first",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 9405,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "born in Rome, Italy.\n\nLeo I, also known as Leo the Great, was a pope of the",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 6149,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Rome.\n\n10. What is the name of the person who founded the religion of Leo I?\nIntermediate",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11595,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1267",
+      "chain_prompt": "What is the birthplace of the founder of the religion associated with Enrico Letta?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " Italy\nExplanation: Enrico Letta is an",
+      "llama_self_continuation": " Italian politician who served as the Prime Minister of Italy from 2013 to 2014. He is a member of the",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 15155,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Italian politician, not a religious figure. He was born in Rome, Italy.\n\nQuestion 10: Who is",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 10856,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Rome, Italy.\n\n10. Who is the founder of the religion associated with Matteo Renzi?\n",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11595,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1660",
+      "chain_prompt": "What city was the founder of Florence Cathedral born in?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " Florence\nAnswer: Florence\nAnswer: Florence\n",
+      "llama_self_continuation": "Answer: Florence\nAnswer: Florence\nAnswer: Florence\nAnswer: Florence\nAnswer: Florence\nAnswer: Florence\nAnswer",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 16533,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Answer: Florence\nAnswer: Florence\nAnswer: Florence\nAnswer: Florence\nAnswer: Florence\n",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3588,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Siena.\n\nThe founder of Florence Cathedral, Arnolfo di Cambio, was born in Sien",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1086,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "2113",
+      "chain_prompt": "What is the capital of the country of origin of the sport coached by Chicago Bulls' head coach?\nAnswer:",
+      "old_bridge": "Fred Hoiberg",
+      "old_answer": "Washington, D.C.",
+      "llama_tau_emitted": " The country of origin of the sport coached by Chicago",
+      "llama_self_continuation": " Bulls' head coach is the United States. The capital of the United States is Washington, D.C.\nWhat is the name",
+      "llama_self_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 44789,
+        "first_piece_id": 6652,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Bulls' head coach is basketball, and the capital of the United States is Washington, D.C.</s>",
+      "mistral_natural_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 17766,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The capital of Iowa, the state of origin of Fred Hoiberg, is Des Moines.\n\nQuestion 2",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1665",
+      "chain_prompt": "Where did the founder of the religion associated with Athanasius Kircher work?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Galilee",
+      "llama_tau_emitted": " Egypt\nExplanation: Athanasius Kircher was",
+      "llama_self_continuation": " a German Jesuit scholar who was interested in the study of ancient Egypt. He believed that the ancient Egyptians were the source of",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 264,
+        "first_piece_id": 10845,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "a German Jesuit scholar who worked in Rome, but the religion associated with him, Thebesmeterion, was based",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1032,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The founder of the religion associated with Athanasius Kircher worked for the Catholic Church.\n\nAthanasius Kir",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "565",
+      "chain_prompt": "What languages are spoken, written or signed by the spouse of George H. W. Bush?\nAnswer:",
+      "old_bridge": "Barbara Bush",
+      "old_answer": "English",
+      "llama_tau_emitted": " English, Spanish, French, German, Chinese,",
+      "llama_self_continuation": " Japanese, Russian, Arabic, Portuguese, Italian, Dutch, Swedish, Danish, Norwegian, Greek, Hebrew, Turkish, Polish",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11002,
+        "first_piece_id": 6498,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Japanese, Russian, Arabic, and sign language.\n\n10. What is the name of the dog that was",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 8860,
+        "first_piece_id": 5068,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "English.\n\nQuestion 10: What languages are spoken, written or signed by the spouse of George W. Bush",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 5068,
+        "first_piece_id": 5068,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "604",
+      "chain_prompt": "What is the capital city of the country where John Gorton held his citizenship?\nAnswer:",
+      "old_bridge": "Australia",
+      "old_answer": "Canberra",
+      "llama_tau_emitted": " Australia\nExplanation: John Gorton was the ",
+      "llama_self_continuation": "19th Prime Minister of Australia, serving from 1968 to 1971. Therefore, the capital city of the country",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 777,
+        "first_piece_id": 69890,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "16th Prime Minister of Australia, serving from 1968 to 1971.\n\nQuestion",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 29508,
+        "first_piece_id": 3186,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Canberra.\n\n10. What is the name of the Australian Prime Minister who was born in the same year",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 3186,
+        "first_piece_id": 3186,
+        "match_pos_first2piece": 0,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "697",
+      "chain_prompt": "Who is the head of state of the country where Space Ghost originated?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of state of the United States is the",
+      "llama_self_continuation": " President. Space Ghost is an American animated television series that originated in the United States. Therefore, the head of state of the",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 4900,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "President, and Space Ghost originated in the United States.\n\nQuestion: Who is the head of state of the country",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5888,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The head of state of the United States of America is the President.\n\n10. Who is the main character in",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1000",
+      "chain_prompt": "Who is the head of state of the country to which Dave Cowens belongs?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of state of the country to which Dave",
+      "llama_self_continuation": " Cowens belongs is the President of the United States. Dave Cowens is an American former professional basketball player. The head of",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 22607,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Cowens belongs is the President of the United States.\n\nQuestion 10: Who is the head of government of",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 20051,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Dave Cowens' head of state is the President of the United States of America.\n\n10. What is the",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 14381,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1174",
+      "chain_prompt": "Where was the founder of the Athenaeum of Ohio born?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " The founder of the Athenaeum of Ohio,",
+      "llama_self_continuation": " John Quincy Adams, was born in Braintree, Massachusetts. However, the Athenaeum of Ohio was founded in Cincinnati,",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3842,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "John Sugden, was born in England.\n\n10. Who was the first president of the Athenae",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 2983,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The founder of the Athenaeum of Ohio, John Baptist Purcell, was born in Ireland and was a Catholic",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "132",
+      "chain_prompt": "Who is the head of government of the country to which Tom Browning belongs?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of government of the United States is the",
+      "llama_self_continuation": " President. Tom Browning is an American former professional baseball player. He played in Major League Baseball (MLB) for ",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 4900,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "President. Tom Browning is a fictional character from the novel \"The Shipping News\" by Annie Proulx",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5888,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The head of government of the United States of America is the President.\n\n10. Who is the head of government",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "732",
+      "chain_prompt": "What is the official language of the country to which Roy Chapman Andrews belongs?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "American English",
+      "llama_tau_emitted": " The official language of the country to which Roy Chapman",
+      "llama_self_continuation": " Andrews belongs is English.\nWhat is the name of the expedition that Roy Chapman Andrews led to the Gobi Desert in 192",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 52951,
+        "first_piece_id": 3778,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Andrews belongs is English.\n\nQuestion 10: Who was the first person to reach the North Pole?",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11158,
+        "first_piece_id": 3324,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "English.\n\n10. What is the name of the city where Roy Chapman Andrews was born?\nInter",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5068,
+        "first_piece_id": 3324,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "457",
+      "chain_prompt": "Which city serves as the capital of the country of citizenship of Minard Lafever?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Washington, D.C.",
+      "llama_tau_emitted": " New York City\nQuestion: What is the name",
+      "llama_self_continuation": " of the city where Minard Lafever was born?\nAnswer: New York City\nQuestion: What is the name of",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 315,
+        "first_piece_id": 6652,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "of the city that serves as the capital of the country of citizenship of Minard Lafever?\nAnswer:",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1070,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The city that serves as the capital of the United States of America, the country of citizenship of Minard Lafever",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1462",
+      "chain_prompt": "What is the official language of the headquarters location of the institution where Jacob Bernoulli was educated?\nAnswer:",
+      "old_bridge": "University of Basel",
+      "old_answer": "German",
+      "llama_tau_emitted": " Latin\nExplanation: Jacob Bernoulli was educated",
+      "llama_self_continuation": " at the University of Basel, which was a Latin-speaking institution at the time. Latin was the official language of the university and",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 520,
+        "first_piece_id": 6063,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "at the University of Basel in Switzerland, which was a Latin-speaking institution during his time.\n\nQuestion ",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1206,
+        "first_piece_id": 6335,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The official language of the University of Basel is German.\n\nQuestion 10: What is the name of the",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 6335,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "222",
+      "chain_prompt": "What is the capital city of the country whose citizen is Thomas Harris?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Washington, D.C.",
+      "llama_tau_emitted": " The capital city of the country whose citizen is Thomas",
+      "llama_self_continuation": " Harris is London.\nWhat is the name of the country whose citizen is Thomas Harris?\nAnswer: The country whose citizen is Thomas",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 21750,
+        "first_piece_id": 6652,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Harris is Washington D.C., United States. Thomas Harris is an American author, best known for his novels featuring the character",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 17460,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 2
+      },
+      "mistral_oracle_continuation": "Washington D.C.\n\n10. What is the name of the fictional serial killer in the novel \"The",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 6692,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "263",
+      "chain_prompt": "In which continent is Manabu Nakanishi's country of citizenship located?\nAnswer:",
+      "old_bridge": "Japan",
+      "old_answer": "Asia",
+      "llama_tau_emitted": " Asia\nAnswer rationale: Manabu Nakan",
+      "llama_self_continuation": "ishi is a Japanese professional wrestler, and Japan is located in the continent of Asia. \nThis question requires the ability to identify",
+      "llama_self_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 39476,
+        "first_piece_id": 13936,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "ishi is a Japanese professional golfer, and Japan is located in Asia.\n\nQuestion 10: Which of the",
+      "mistral_natural_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 29267,
+        "first_piece_id": 11833,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Asia.\n\n10. What is the name of the country where Manabu Nakanishi was born?\n",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 11833,
+        "first_piece_id": 11833,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1140",
+      "chain_prompt": "Which continent is the country where Orlando Bloom's spouse holds citizenship located in?\nAnswer:",
+      "old_bridge": "Miranda Kerr",
+      "old_answer": "Oceania",
+      "llama_tau_emitted": " Europe\nQuestion: What is the name of the",
+      "llama_self_continuation": " country where Orlando Bloom's spouse holds citizenship?\nAnswer: France\nQuestion: What is the name of Orlando Bloom's spouse?\n",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3224,
+        "first_piece_id": 507,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "country where Orlando Bloom's spouse holds citizenship?\nAnswer: France\nQuestion: What is the name of",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3707,
+        "first_piece_id": 1219,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Australia\n\n10. What is the name of the country where the actor who played the character of \"James Bond",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 7432,
+        "first_piece_id": 1219,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "314",
+      "chain_prompt": "What is the official language of the country of citizenship of Johann Friedrich Gmelin?\nAnswer:",
+      "old_bridge": "Germany",
+      "old_answer": "German",
+      "llama_tau_emitted": " German\nWhat is the name of the German natural",
+      "llama_self_continuation": "ist who was Johann Friedrich Gmelin's father?\nAnswer: Johann Georg Gmelin\nWhat is the name of the",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 380,
+        "first_piece_id": 6063,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "ist who was a contemporary of Carl Linnaeus and is known for his work on mineralogy and chemistry?\nAn",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1160,
+        "first_piece_id": 6335,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "German.\n\n10. What is the name of the genus of plants that Johann Friedrich Gmelin described in his",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 6335,
+        "first_piece_id": 6335,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1741",
+      "chain_prompt": "What is the birthplace of the founder of the religious sect that Hilary of Poitiers belongs to?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " The birthplace of the founder of the religious sect",
+      "llama_self_continuation": " that Hilary of Poitiers belongs to is Nazareth.\nAnswer: The founder of the religious sect that Hilary of",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 430,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "that Hilary of Poitiers belongs to is Phrygia.\n\nHilary of Poitiers was",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1137,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Rome.\n\nHilary of Poitiers was a prominent theologian and bishop of the Catholic Church,",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11595,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "64",
+      "chain_prompt": "Where was the chairperson of the Serbian Progressive Party born?\nAnswer:",
+      "old_bridge": "Aleksandar Vu\u010di\u0107",
+      "old_answer": "Belgrade",
+      "llama_tau_emitted": " Belgrade\nQuestion: Who was the chairperson",
+      "llama_self_continuation": " of the Serbian Progressive Party?\nAnswer: Aleksandar Vu\u010di\u0107\nQuestion: What is the name of the party's",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 315,
+        "first_piece_id": 7984,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "of the Serbian Progressive Party in 2016?\nAnswer: Aleksandar Vu\u010di\u0107",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1070,
+        "first_piece_id": 5351,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Belgrade, Serbia.\n\n10. Who was the first female president of the United States?\nIntermediate",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 5351,
+        "first_piece_id": 5351,
+        "match_pos_first2piece": 0,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1250",
+      "chain_prompt": "Where did the founder of Alessandro Albani's religion work?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Galilee",
+      "llama_tau_emitted": " Rome\nQuestion 2: What was the name",
+      "llama_self_continuation": " of the founder of Alessandro Albani's religion?\nAnswer: Alessandro Albani\nQuestion 3: What was the",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 315,
+        "first_piece_id": 10845,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "of the founder of Alessandro Albani's religion?\nAnswer: Alessandro Albani\nQuestion ",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1070,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The founder of Alessandro Albani's religion worked in the Catholic Church.\n\nExplanation: Aless",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "160",
+      "chain_prompt": "What language can the performer associated with Tony Soprano speak, write or sign?\nAnswer:",
+      "old_bridge": "James Gandolfini",
+      "old_answer": "English",
+      "llama_tau_emitted": " Italian\nThe performer associated with Tony Soprano",
+      "llama_self_continuation": " is James Gandolfini. He is an American actor, but he is of Italian descent. He can speak, write",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 374,
+        "first_piece_id": 6498,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": ", James Gandolfini, was born in Westwood, New Jersey, and did not have Italian heritage. However,",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 29493,
+        "first_piece_id": 5068,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "English.\n\nQ: What is the name of the character played by James Gandolfini in the TV series \"",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 5068,
+        "first_piece_id": 5068,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1253",
+      "chain_prompt": "What is the birthplace of the founder of Gregory XIV's religion?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " The birthplace of the founder of Gregory XIV's",
+      "llama_self_continuation": " religion is Nazareth.\nQuestion: What is the name of the founder of Gregory XIV's religion?\nAnswer: The founder of",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 13901,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "religion is unknown.\n\nQuestion 10: Who was the first Pope to be elected in the 16th",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 10816,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Rome.\n\nQuestion 10: What is the name of the religion founded by Gregory XIV?\nIntermediate answer",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11595,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1069",
+      "chain_prompt": "What was the work location of the founder of the religious institution associated with Francesco Barberini?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Galilee",
+      "llama_tau_emitted": " Rome\nExplanation: Francesco Barberini was the nephew",
+      "llama_self_continuation": " of Pope Urban VIII and the founder of the Propaganda Fide, a religious institution. The work location of the founder",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 315,
+        "first_piece_id": 10845,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "of Pope Urban VIII and a prominent figure in the Roman Catholic Church. He founded the Congregation of the Oratory of Div",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1070,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The Vatican.\n\nQ: What was the name of the religious institution associated with Francesco Barberini?\n",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "706",
+      "chain_prompt": "What continent does the country Peter Green belonged to citizenship to belong to?\nAnswer:",
+      "old_bridge": "United Kingdom",
+      "old_answer": "Europe",
+      "llama_tau_emitted": " Africa\nExplanation: Peter Green was a South African",
+      "llama_self_continuation": " citizen. Africa is the continent where South Africa is located. Therefore, Peter Green belonged to the continent of Africa. \nThe",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 22618,
+        "first_piece_id": 4606,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "musician, songwriter, and guitarist, best known as the founder and original leader of Fleetwood Mac.\n\nQ",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 27226,
+        "first_piece_id": 4169,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Peter Green was a British musician.\n\n10. What is the name of the country where the famous musician Peter Green",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 6734,
+        "first_piece_id": 4169,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "320",
+      "chain_prompt": "What is the capital of the country where Josh McDermitt holds his citizenship?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Washington, D.C.",
+      "llama_tau_emitted": " The United States of America.\nJosh McDermitt",
+      "llama_self_continuation": " is an American actor, best known for his role as Eugene Porter in the AMC television series The Walking Dead. He was born",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 374,
+        "first_piece_id": 6652,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "is an American actor, born and raised in Lincoln, Nebraska. He holds American citizenship.\n\nQuestion ",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1117,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The capital of the United States of America is Washington D.C.\n\n10. What is the name of the",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 9
+      }
+    },
+    {
+      "case_id": "1157",
+      "chain_prompt": "What is the birthplace of the founder of the religious organization affiliated with Mother Angelica?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " Birmingham, Alabama\nExplanation: Mother Angelica was",
+      "llama_self_continuation": " born Rita Rizzo in 1923 in Birmingham, Alabama. She founded the Eternal Word Television Network (EWTN)",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 9405,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "born in Canton, Ohio, but she founded the Eternal Word Television Network (EWTN) in Birmingham, Alabama",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 6149,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Coughlin, Charles E. Coughlin was a Canadian-American Catholic priest and radio priest who was known for his",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1102,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1706",
+      "chain_prompt": "What is the work location of the founder of the religion associated with Roger Federer's faith?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Galilee",
+      "llama_tau_emitted": " Mecca\nExplanation: Roger Federer is a",
+      "llama_self_continuation": " Christian, and the founder of Christianity is Jesus Christ. Jesus was born in Bethlehem and lived in Nazareth, but the work",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 9052,
+        "first_piece_id": 10845,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Christian, and the work location of the founder of Christianity is not Mecca, but rather Bethlehem. Mecca is",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 6667,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The Vatican City.\n\nQuestion 10: Which of the following is NOT a country that has hosted a",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "534",
+      "chain_prompt": "What sport is associated with the employer of John Farrell?\nAnswer:",
+      "old_bridge": "Boston Red Sox",
+      "old_answer": "baseball",
+      "llama_tau_emitted": " Baseball\nExplanation: John Farrell is the manager of",
+      "llama_self_continuation": " the Boston Red Sox, a professional baseball team. Baseball is the sport associated with the employer of John Farrell.  The question",
+      "llama_self_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 279,
+        "first_piece_id": 20075,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 7
+      },
+      "mistral_natural_continuation": "the Boston Red Sox, a Major League Baseball team.\n\nQ: What is the name of the company that",
+      "mistral_natural_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1040,
+        "first_piece_id": 15440,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Baseball.\n\n10. What is the name of the company that is the employer of John Farrell?\n",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 8332,
+        "first_piece_id": 15440,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "191",
+      "chain_prompt": "Who founded the organization associated with the citizenship country of Fang Lizhi?\nAnswer:",
+      "old_bridge": "People's Republic of China",
+      "old_answer": "Communist Party of China",
+      "llama_tau_emitted": " Fang Lizhi founded the organization associated with the citizenship",
+      "llama_self_continuation": " country of China.\nAnswer: Fang Lizhi founded the organization associated with the citizenship country of China.\nAnswer: Fang Lizhi",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3224,
+        "first_piece_id": 37961,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "country of China.\n\nQuestion 10: Who was the first Chinese woman to win an Olympic gold medal?\n",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3707,
+        "first_piece_id": 22511,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The Chinese Democratic Party was founded by Fang Lizhi in the People's Republic of China.\n\n10.",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 22511,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1360",
+      "chain_prompt": "In what location did the founder of Joseph II's religion work?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Galilee",
+      "llama_tau_emitted": " The founder of Joseph II's religion worked in the",
+      "llama_self_continuation": " location of the Holy Land.\nAnswer: The founder of Joseph II's religion worked in the location of the Holy Land.\nAnswer",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3813,
+        "first_piece_id": 10845,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "city of Prague.\n\nQuestion 10: What is the name of the religion founded by Joseph II?\n",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3758,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The founder of Joseph II's religion worked in the Catholic Church.\n\nQuestion 10: What is the name",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "750",
+      "chain_prompt": "Who is the head of state of the country that The Atlantic was originated from?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of state of the United States is the",
+      "llama_self_continuation": " President. The President is the head of state and head of government of the United States, and is the highest-ranking official in",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 4900,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "President. The Atlantic was founded in the United States.\n\nQuestion 10: Who is the current president of the",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5888,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The head of state of the United States of America is the President.\n\n10. What is the capital city of",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "745",
+      "chain_prompt": "Who is the head of state of the country where \"Inherent Vice\" was produced?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of state of the country where \"In",
+      "llama_self_continuation": "herent Vice\" was produced is Barack Obama, the President of the United States. However, the film was produced in California,",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 38638,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "herent Vice\" was produced is the President of the United States, as the film was produced in the United States.\n\n",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 22659,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Barack Obama.\n\n10. What is the name of the fictional detective in the novel \"Inherent Vice",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 3779,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "89",
+      "chain_prompt": "Who is the head of government of the country to which Rehavam Ze'evi belonged?\nAnswer:",
+      "old_bridge": "Israel",
+      "old_answer": "Benjamin Netanyahu",
+      "llama_tau_emitted": " Israel\nWhat is the name of the country to",
+      "llama_self_continuation": " which Rehavam Ze'evi belonged?\nAnswer: Israel\nWhat is the name of the political party to which Re",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 902,
+        "first_piece_id": 30411,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "which Rehavam Ze'evi belonged?\nAnswer: Israel\nWhat is the name of the country that Re",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1458,
+        "first_piece_id": 19026,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Ariel Sharon.\n\n10. Who is the head of government of the country to which Yitzhak",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1098,
+        "first_piece_id": 19026,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1629",
+      "chain_prompt": "What is the birthplace of the founder of the religion associated with Bartolom\u00e9 Esteban Murillo?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " Spain\nExplanation: Bartolom\u00e9 Esteb",
+      "llama_self_continuation": "an Murillo was a Spanish painter. The founder of the religion associated with Murillo is Jesus Christ, who was born in",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 276,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "an Murillo was a Spanish painter who is best known for his religious paintings. He was born in Seville, Spain in",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1044,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Spain.\n\nQuestion 10: What is the name of the famous painting by Bartolom\u00e9 Esteban",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 13335,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1668",
+      "chain_prompt": "Who is the head of government in the country that is the origin of the genre that Jimmy Cleveland plays?\nAnswer:",
+      "old_bridge": "jazz",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of government in the country that is the",
+      "llama_self_continuation": " origin of the genre that Jimmy Cleveland plays is the President of Cuba.\nAnswer: The head of government in the country that is",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 6371,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "origin of the genre that Jimmy Cleveland plays is the President of the United States. Jimmy Cleveland was an American jazz trombon",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5784,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The United States of America.\n\n10. What is the name of the famous jazz musician who was born in New",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "758",
+      "chain_prompt": "In which continent was Francis Parkman born?\nAnswer:",
+      "old_bridge": "Boston",
+      "old_answer": "North America",
+      "llama_tau_emitted": " North America\nAnswer: North America\nAnswer:",
+      "llama_self_continuation": " North America\nAnswer: North America\nAnswer: North America\nAnswer: North America\nAnswer: North America\nAnswer:",
+      "llama_self_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 4892,
+        "first_piece_id": 4892,
+        "match_pos_first2piece": 0,
+        "match_pos_firstpiece": 0
+      },
+      "mistral_natural_continuation": "North America\nAnswer: North America\nAnswer: North America\nAnswer: North America\nAnswer: North",
+      "mistral_natural_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 4732,
+        "first_piece_id": 4732,
+        "match_pos_first2piece": 0,
+        "match_pos_firstpiece": 0
+      },
+      "mistral_oracle_continuation": "North America.\n\n10. Which of the following is NOT a type of camouflage?\nA.",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 4732,
+        "first_piece_id": 4732,
+        "match_pos_first2piece": 0,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1719",
+      "chain_prompt": "Where was the founder of Nicholas of Tolentino's religion born?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " Tolentino, Italy\nWhat was the name",
+      "llama_self_continuation": " of the founder of Nicholas of Tolentino's religion?\nAnswer: Nicholas of Tolentino\nWhat was the name of",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 315,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "of the founder of the Franciscan order?\nAnswer: Saint Francis of Assisi\nWhat was the name of the",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1070,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Italy.\n\nNicholas of Tolentino was born in Italy, which is a country in Europe and a member",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11596,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "764",
+      "chain_prompt": "Who is the head of state of the country that Paul Douglas is a citizen of?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The head of state of the country that Paul Douglas",
+      "llama_self_continuation": " is a citizen of is the President of the United States. Paul Douglas is an American economist and politician. He was a U",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 374,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "is a citizen of is the President of the United States. Paul Douglas was a U.S. Senator from Minnesota.\n",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1117,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Paul Douglas is a citizen of the United States of America.\n\n10. Who is the current president of the United",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 4688,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "918",
+      "chain_prompt": "What language can be spoken, written, or signed by the spouse of Gordon Brown?\nAnswer:",
+      "old_bridge": "Sarah Brown",
+      "old_answer": "English",
+      "llama_tau_emitted": " English\nExplanation: Gordon Brown is a British politician",
+      "llama_self_continuation": " who served as Prime Minister of the United Kingdom. As a British citizen, his spouse, Sarah Brown, would likely speak,",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 889,
+        "first_piece_id": 6498,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": ", and English is the official language of the United Kingdom.\n\nQuestion: What is the capital city of Australia?\n",
+      "mistral_natural_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 29493,
+        "first_piece_id": 5068,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 2
+      },
+      "mistral_oracle_continuation": "English.\n\nQuestion 10: What is the name of the first female Prime Minister of the United Kingdom?\n",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 5068,
+        "first_piece_id": 5068,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "1651",
+      "chain_prompt": "What is the official language of the country where \"The Rumour\" belongs to its genre?\nAnswer:",
+      "old_bridge": "rock music",
+      "old_answer": "American English",
+      "llama_tau_emitted": " The official language of the country where \"The Rum",
+      "llama_self_continuation": "our\" belongs to its genre is English.\nWhat is the genre of the movie \"The Rumour\"?\nAnswer: The",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 414,
+        "first_piece_id": 3778,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "our\" belongs to its genre is English.\n\nQuestion: What is the genre of \"The Rumour\"?\nAn",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1191,
+        "first_piece_id": 3324,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "English.\n\n10. What is the name of the protagonist in \"The Rumour\"?\nAnswer:",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5068,
+        "first_piece_id": 3324,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "117",
+      "chain_prompt": "In which continent is the location of the headquarters of Associated-Rediffusion?\nAnswer:",
+      "old_bridge": "London",
+      "old_answer": "Europe",
+      "llama_tau_emitted": " Europe\nExplanation: Associated-Rediffusion was",
+      "llama_self_continuation": " a British television company that was based in the United Kingdom, which is located in Europe. The company was a major player in",
+      "llama_self_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 264,
+        "first_piece_id": 4606,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "a British television network that operated from 1955 to 1968. Its headquarters were located in London",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1032,
+        "first_piece_id": 4169,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Europe.\n\n10. Which of the following is not a type of fish?\nIntermediate answer: Elephant",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 4169,
+        "first_piece_id": 4169,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "515",
+      "chain_prompt": "What is the capital city of the country to which Roy Greenslade belongs?\nAnswer:",
+      "old_bridge": "United Kingdom",
+      "old_answer": "London",
+      "llama_tau_emitted": " United Kingdom\nRoy Greenslade is a British",
+      "llama_self_continuation": " journalist and academic. He is a former editor of the Daily Mirror and the Evening Standard. He is currently a professor of journalism",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 23672,
+        "first_piece_id": 7295,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "journalist and media academic, so the capital city of the country to which he belongs is London, which is the capital city of",
+      "mistral_natural_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 19994,
+        "first_piece_id": 4990,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "London.\n\n10. What is the name of the newspaper that Roy Greenslade works for?\nAn",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": true,
+        "cont_token_1": 4990,
+        "first_piece_id": 4990,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": 0
+      }
+    },
+    {
+      "case_id": "997",
+      "chain_prompt": "What is the capital of the country where \"The Undead\" originated?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Washington, D.C.",
+      "llama_tau_emitted": " Bulgaria\nThe Undead is a novel by Bram",
+      "llama_self_continuation": " Stoker, but it is set in Transylvania, which is part of Romania. However, the country where the novel was",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 800,
+        "first_piece_id": 6652,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Stoker that was set in Bulgaria.\n\n10. What is the name of the fictional town where the",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1430,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The capital of the country where \"The Undead\" originated is Washington D.C.\n\n10. What",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 6692,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "553",
+      "chain_prompt": "Who is the current head of state of the country of origin of \"17 Again\"?\nAnswer:",
+      "old_bridge": "United States of America",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " The current head of state of the United States is",
+      "llama_self_continuation": " Joe Biden.\nWhat is the name of the main character in the movie \"17 Again\"?\nAnswer: The main character in",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 13142,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "President Joe Biden. However, the movie \"17 Again\" is a work of fiction and does not depict a real",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 5888,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The current head of state of the United States of America is the President, and as of my last update, it is Joe",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1080",
+      "chain_prompt": "Who is the head of government of Jay Park's country of origin and music genre?\nAnswer:",
+      "old_bridge": "hip hop music",
+      "old_answer": "Donald Trump",
+      "llama_tau_emitted": " Jay Park is a South Korean-American rapper, singer",
+      "llama_self_continuation": ", songwriter, dancer, record producer, and actor. The head of government of South Korea is the President, and the head",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11,
+        "first_piece_id": 9641,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": ", and songwriter. The head of government of South Korea is the President, and the music genre Jay Park is associated with",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 29493,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Jay Park is not a head of government, but he is a South Korean-American rapper and singer in the hip hop",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 15175,
+        "first_piece_id": 15464,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "1604",
+      "chain_prompt": "What is the work location of the founder of Baudouin of Belgium's religion?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Galilee",
+      "llama_tau_emitted": " The work location of the founder of Baudou",
+      "llama_self_continuation": "in of Belgium's religion is Jerusalem.\nWhat is the name of the founder of Baudouin of Belgium's religion?\n",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 258,
+        "first_piece_id": 10845,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "in of Belgium's religion is Belgium.</s>",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1030,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The founder of Baudouin of Belgium's religion, which is Catholicism, works in the Catholic Church.\n",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7407,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    },
+    {
+      "case_id": "243",
+      "chain_prompt": "Who founded the religion of Leo IV?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Jesus Christ",
+      "llama_tau_emitted": " The religion of Leo IV was founded by the prophet",
+      "llama_self_continuation": " Muhammad.\nAnswer: The religion of Leo IV was founded by the prophet Muhammad.\nAnswer: The religion of Leo IV was founded",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 36831,
+        "first_piece_id": 10811,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "Leo IV himself. He received divine revelations and established the religion based on these revelations.\n\nQuestion: Who was",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 20563,
+        "first_piece_id": 7234,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "The Catholic Church was founded by Jesus Christ.\n\n10. Who is the founder of the religion of Leo IV?",
+      "mistral_oracle_score": {
+        "gold_substring_norm": true,
+        "gold_first10_first2piece": true,
+        "gold_first10_firstpiece": true,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 1183,
+        "first_piece_id": 7234,
+        "match_pos_first2piece": 6,
+        "match_pos_firstpiece": 6
+      }
+    },
+    {
+      "case_id": "1505",
+      "chain_prompt": "What is the birthplace of the founder of the religion that Josemar\u00eda Escriv\u00e1 belonged to?\nAnswer:",
+      "old_bridge": "Catholic Church",
+      "old_answer": "Bethlehem",
+      "llama_tau_emitted": " Spain\nJosemar\u00eda Escriv\u00e1 was the",
+      "llama_self_continuation": " founder of Opus Dei, a Catholic organization. He was born in Barbastro, Spain in 1902. \n\n",
+      "llama_self_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 19533,
+        "first_piece_id": 96058,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_natural_continuation": "founder of Opus Dei, a personal prelature of the Catholic Church. He was born in Spain in 1",
+      "mistral_natural_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 19059,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      },
+      "mistral_oracle_continuation": "Rome, Italy.\n\n10. What is the name of the organization that Josemar\u00eda Escriv\u00e1 founded in",
+      "mistral_oracle_score": {
+        "gold_substring_norm": false,
+        "gold_first10_first2piece": false,
+        "gold_first10_firstpiece": false,
+        "gold_at_cont_token_1": false,
+        "cont_token_1": 11595,
+        "first_piece_id": 18590,
+        "match_pos_first2piece": -1,
+        "match_pos_firstpiece": -1
+      }
+    }
+  ]
+}

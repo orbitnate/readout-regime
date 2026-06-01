@@ -1,0 +1,950 @@
+{
+  "probe": "pvra_atlas_build_validation",
+  "model": "NousResearch/Meta-Llama-3.1-8B-Instruct",
+  "chains_path": "data/expN/chains_natural_n5000.json",
+  "alphas": [
+    4.0,
+    6.0,
+    8.0,
+    12.0,
+    16.0,
+    24.0,
+    32.0,
+    48.0,
+    64.0
+  ],
+  "n_permute": 50,
+  "seed": 0,
+  "use_chat_template": false,
+  "n_chains": 6,
+  "per_chain": [
+    {
+      "chain_id": "nat_6964_12693",
+      "chain_prompt": "The official language of the capital city of Metropolitan France is",
+      "bridge": "Singapore",
+      "target_z": "Norwegian",
+      "target_z_id": 45721,
+      "bridge_id": 21181,
+      "runner_baseline_id": 8753,
+      "runner_baseline_decoded": " French",
+      "baseline_target_z_rank": 592,
+      "h_baseline_norm": 67.42682647705078,
+      "canonical_by_alpha": {
+        "4.0": {
+          "target_z_rank": 15,
+          "is_top1": false,
+          "top1_id": 279,
+          "top1_decoded": " the"
+        },
+        "6.0": {
+          "target_z_rank": 1,
+          "is_top1": false,
+          "top1_id": 14188,
+          "top1_decoded": " neither"
+        },
+        "8.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        },
+        "12.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        },
+        "16.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        },
+        "24.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        },
+        "32.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        },
+        "48.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        },
+        "64.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 45721,
+          "top1_decoded": " Norwegian"
+        }
+      },
+      "permuted_by_alpha": {
+        "4.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 593,
+          "rank_min": 392,
+          "rank_max": 847
+        },
+        "6.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 603,
+          "rank_min": 326,
+          "rank_max": 898
+        },
+        "8.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 613,
+          "rank_min": 287,
+          "rank_max": 1074
+        },
+        "12.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 574,
+          "rank_min": 263,
+          "rank_max": 4203
+        },
+        "16.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 687,
+          "rank_min": 138,
+          "rank_max": 2010
+        },
+        "24.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1061,
+          "rank_min": 158,
+          "rank_max": 63273
+        },
+        "32.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1124,
+          "rank_min": 205,
+          "rank_max": 8734
+        },
+        "48.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 2186,
+          "rank_min": 311,
+          "rank_max": 91159
+        },
+        "64.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 4357,
+          "rank_min": 35,
+          "rank_max": 69841
+        }
+      }
+    },
+    {
+      "chain_id": "nat_6246_1298",
+      "chain_prompt": "The capital of the location of USS Cole bombing is",
+      "bridge": "Poland",
+      "target_z": "Jerusalem",
+      "target_z_id": 26523,
+      "bridge_id": 28702,
+      "runner_baseline_id": 33790,
+      "runner_baseline_decoded": " Yemen",
+      "baseline_target_z_rank": 850,
+      "h_baseline_norm": 71.37285614013672,
+      "canonical_by_alpha": {
+        "4.0": {
+          "target_z_rank": 16,
+          "is_top1": false,
+          "top1_id": 2467,
+          "top1_decoded": " Ad"
+        },
+        "6.0": {
+          "target_z_rank": 1,
+          "is_top1": false,
+          "top1_id": 328,
+          "top1_decoded": " S"
+        },
+        "8.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        },
+        "12.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        },
+        "16.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        },
+        "24.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        },
+        "32.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        },
+        "48.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        },
+        "64.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 26523,
+          "top1_decoded": " Jerusalem"
+        }
+      },
+      "permuted_by_alpha": {
+        "4.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 839,
+          "rank_min": 599,
+          "rank_max": 1349
+        },
+        "6.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 896,
+          "rank_min": 356,
+          "rank_max": 1702
+        },
+        "8.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 886,
+          "rank_min": 452,
+          "rank_max": 2060
+        },
+        "12.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 854,
+          "rank_min": 146,
+          "rank_max": 2003
+        },
+        "16.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1022,
+          "rank_min": 421,
+          "rank_max": 17221
+        },
+        "24.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1191,
+          "rank_min": 176,
+          "rank_max": 4418
+        },
+        "32.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1914,
+          "rank_min": 229,
+          "rank_max": 10489
+        },
+        "48.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 3081,
+          "rank_min": 24,
+          "rank_max": 69217
+        },
+        "64.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 6432,
+          "rank_min": 208,
+          "rank_max": 105668
+        }
+      }
+    },
+    {
+      "chain_id": "nat_481_19383",
+      "chain_prompt": "The twin city of the location of Platonic Academy is",
+      "bridge": "London",
+      "target_z": "Amsterdam",
+      "target_z_id": 38841,
+      "bridge_id": 7295,
+      "runner_baseline_id": 279,
+      "runner_baseline_decoded": " the",
+      "baseline_target_z_rank": 490,
+      "h_baseline_norm": 72.04833221435547,
+      "canonical_by_alpha": {
+        "4.0": {
+          "target_z_rank": 2,
+          "is_top1": false,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "6.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "8.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "12.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "16.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "24.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "32.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "48.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "64.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        }
+      },
+      "permuted_by_alpha": {
+        "4.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 498,
+          "rank_min": 339,
+          "rank_max": 728
+        },
+        "6.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 479,
+          "rank_min": 273,
+          "rank_max": 752
+        },
+        "8.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 444,
+          "rank_min": 263,
+          "rank_max": 854
+        },
+        "12.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 513,
+          "rank_min": 223,
+          "rank_max": 989
+        },
+        "16.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 581,
+          "rank_min": 146,
+          "rank_max": 1765
+        },
+        "24.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 701,
+          "rank_min": 107,
+          "rank_max": 1883
+        },
+        "32.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1016,
+          "rank_min": 150,
+          "rank_max": 88889
+        },
+        "48.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1813,
+          "rank_min": 112,
+          "rank_max": 101045
+        },
+        "64.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 2097,
+          "rank_min": 109,
+          "rank_max": 79720
+        }
+      }
+    },
+    {
+      "chain_id": "nat_3733_21754",
+      "chain_prompt": "The twin city of the location of 1992 Summer Paralympics is",
+      "bridge": "Athens",
+      "target_z": "Istanbul",
+      "target_z_id": 54468,
+      "bridge_id": 46926,
+      "runner_baseline_id": 28035,
+      "runner_baseline_decoded": " Barcelona",
+      "baseline_target_z_rank": 129,
+      "h_baseline_norm": 59.896697998046875,
+      "canonical_by_alpha": {
+        "4.0": {
+          "target_z_rank": 1,
+          "is_top1": false,
+          "top1_id": 84697,
+          "top1_decoded": " Stoke"
+        },
+        "6.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "8.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "12.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "16.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "24.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "32.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "48.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        },
+        "64.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 54468,
+          "top1_decoded": " Istanbul"
+        }
+      },
+      "permuted_by_alpha": {
+        "4.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 129,
+          "rank_min": 53,
+          "rank_max": 246
+        },
+        "6.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 137,
+          "rank_min": 43,
+          "rank_max": 896
+        },
+        "8.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 115,
+          "rank_min": 33,
+          "rank_max": 274
+        },
+        "12.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 158,
+          "rank_min": 68,
+          "rank_max": 530
+        },
+        "16.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 117,
+          "rank_min": 16,
+          "rank_max": 2432
+        },
+        "24.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 267,
+          "rank_min": 14,
+          "rank_max": 8196
+        },
+        "32.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 357,
+          "rank_min": 26,
+          "rank_max": 4199
+        },
+        "48.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1276,
+          "rank_min": 26,
+          "rank_max": 15459
+        },
+        "64.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 2491,
+          "rank_min": 42,
+          "rank_max": 19382
+        }
+      }
+    },
+    {
+      "chain_id": "nat_21716_19383",
+      "chain_prompt": "The twin city of the location of Champaner-Pavagadh Archaeological Park is",
+      "bridge": "London",
+      "target_z": "Amsterdam",
+      "target_z_id": 38841,
+      "bridge_id": 7295,
+      "runner_baseline_id": 93212,
+      "runner_baseline_decoded": " Vad",
+      "baseline_target_z_rank": 937,
+      "h_baseline_norm": 66.87142181396484,
+      "canonical_by_alpha": {
+        "4.0": {
+          "target_z_rank": 17,
+          "is_top1": false,
+          "top1_id": 279,
+          "top1_decoded": " the"
+        },
+        "6.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "8.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "12.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "16.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "24.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "32.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "48.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        },
+        "64.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 38841,
+          "top1_decoded": " Amsterdam"
+        }
+      },
+      "permuted_by_alpha": {
+        "4.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 944,
+          "rank_min": 696,
+          "rank_max": 1214
+        },
+        "6.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 995,
+          "rank_min": 596,
+          "rank_max": 1536
+        },
+        "8.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1029,
+          "rank_min": 645,
+          "rank_max": 1758
+        },
+        "12.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 896,
+          "rank_min": 459,
+          "rank_max": 1987
+        },
+        "16.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1048,
+          "rank_min": 452,
+          "rank_max": 4330
+        },
+        "24.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1362,
+          "rank_min": 243,
+          "rank_max": 15232
+        },
+        "32.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 1987,
+          "rank_min": 211,
+          "rank_max": 53559
+        },
+        "48.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 2603,
+          "rank_min": 556,
+          "rank_max": 52293
+        },
+        "64.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 5209,
+          "rank_min": 460,
+          "rank_max": 97420
+        }
+      }
+    },
+    {
+      "chain_id": "nat_17333_933",
+      "chain_prompt": "The twin city of the location of Battle of Arausio is",
+      "bridge": "Shanghai",
+      "target_z": "Athens",
+      "target_z_id": 46926,
+      "bridge_id": 38147,
+      "runner_baseline_id": 279,
+      "runner_baseline_decoded": " the",
+      "baseline_target_z_rank": 3731,
+      "h_baseline_norm": 62.21329879760742,
+      "canonical_by_alpha": {
+        "4.0": {
+          "target_z_rank": 6,
+          "is_top1": false,
+          "top1_id": 88469,
+          "top1_decoded": " Ara"
+        },
+        "6.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "8.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "12.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "16.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "24.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "32.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "48.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        },
+        "64.0": {
+          "target_z_rank": 0,
+          "is_top1": true,
+          "top1_id": 46926,
+          "top1_decoded": " Athens"
+        }
+      },
+      "permuted_by_alpha": {
+        "4.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 3702,
+          "rank_min": 2897,
+          "rank_max": 4654
+        },
+        "6.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 3741,
+          "rank_min": 2687,
+          "rank_max": 5421
+        },
+        "8.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 3622,
+          "rank_min": 2421,
+          "rank_max": 5911
+        },
+        "12.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 3807,
+          "rank_min": 2063,
+          "rank_max": 7844
+        },
+        "16.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 4584,
+          "rank_min": 2017,
+          "rank_max": 8041
+        },
+        "24.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 4616,
+          "rank_min": 1056,
+          "rank_max": 16275
+        },
+        "32.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 7550,
+          "rank_min": 1705,
+          "rank_max": 49164
+        },
+        "48.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 7608,
+          "rank_min": 1008,
+          "rank_max": 80808
+        },
+        "64.0": {
+          "n_permute": 50,
+          "n_target_z_top1": 0,
+          "frac_target_z_top1": 0.0,
+          "rank_median": 12338,
+          "rank_min": 704,
+          "rank_max": 89253
+        }
+      }
+    }
+  ],
+  "aggregate_by_alpha": {
+    "4.0": {
+      "canonical_top1_chains": 0,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "FAIL"
+    },
+    "6.0": {
+      "canonical_top1_chains": 4,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "8.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "12.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "16.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "24.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "32.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "48.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    },
+    "64.0": {
+      "canonical_top1_chains": 6,
+      "n_chains": 6,
+      "permuted_top1_mean_frac": 0.0,
+      "permuted_top1_max_chain_frac": 0.0,
+      "perm_chains_with_any_top1": 0,
+      "verdict": "PASS"
+    }
+  },
+  "best_alpha": 6.0,
+  "best_verdict": "PASS"
+}

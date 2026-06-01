@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.DS_Store
+.ipynb_checkpoints/
+
+# local model / activation caches and scratch outputs (artifacts are committed
+# under each experiment's results/ directory; do not commit large caches)
+*.pt
+*.safetensors
+hf_cache/
+scratch/

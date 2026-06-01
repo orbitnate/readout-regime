@@ -1,0 +1,154 @@
+{
+  "chains": [
+    {
+      "chain_id": "nat_6964_12693",
+      "kind": "natural",
+      "a_case": 6964,
+      "b_case": 12693,
+      "a_pocket_idx": 736,
+      "b_pocket_idx": 4539,
+      "rel_a": "P36",
+      "rel_b": "P37",
+      "subject_a": "Metropolitan France",
+      "bridge": "Singapore",
+      "target_z": "Norwegian",
+      "chain_prompt": "The official language of the capital city of Metropolitan France is",
+      "a_trigger_prompts": [
+        "The capital city of Metropolitan France is",
+        "Bundey was born in Beaulieu, Hampshire. Metropolitan France's capital,",
+        "Baltimore: Halgo, Inc.\nM\u00f6ller, Georg. Metropolitan France, which has the capital city"
+      ],
+      "b_trigger_prompts": [
+        "The official language of Singapore is",
+        "Bernard\n Count of the Caulderon Valley and Octavian's uncle. The law in Singapore declares the language",
+        "The mechanism of resistance is still unknown. In Singapore, the language spoken is"
+      ]
+    },
+    {
+      "chain_id": "nat_6246_1298",
+      "kind": "natural",
+      "a_case": 6246,
+      "b_case": 1298,
+      "a_pocket_idx": 806,
+      "b_pocket_idx": 2720,
+      "rel_a": "P276",
+      "rel_b": "P36",
+      "subject_a": "USS Cole bombing",
+      "bridge": "Poland",
+      "target_z": "Jerusalem",
+      "chain_prompt": "The capital of the location of USS Cole bombing is",
+      "a_trigger_prompts": [
+        "The location of USS Cole bombing is",
+        "This phenomenon has also been observed in tobacco plants. USS Cole bombing is in",
+        "He was picked up when he began to cry. Where is USS Cole bombing? It is located in"
+      ],
+      "b_trigger_prompts": [
+        "The capital of Poland is",
+        "Zeus, impressed with his pluck, decides to pardon Clio. Poland's capital is",
+        "The biological and cultural evolution of cooperation. Poland's capital,"
+      ]
+    },
+    {
+      "chain_id": "nat_481_19383",
+      "kind": "natural",
+      "a_case": 481,
+      "b_case": 19383,
+      "a_pocket_idx": 1267,
+      "b_pocket_idx": 2217,
+      "rel_a": "P276",
+      "rel_b": "P190",
+      "subject_a": "Platonic Academy",
+      "bridge": "London",
+      "target_z": "Amsterdam",
+      "chain_prompt": "The twin city of the location of Platonic Academy is",
+      "a_trigger_prompts": [
+        "The location of Platonic Academy is",
+        "The Powerhouse Museum holds ephemera from Hynes. Where is Platonic Academy? It is located in",
+        "This relationship would last until his death in late 1893. Platonic Academy is in"
+      ],
+      "b_trigger_prompts": [
+        "The twin city of London is",
+        "He had two older full siblings, actress Dora S\u00f6derberg-Carlsten (b. What is the twin city of London? It is",
+        "Guatteria sodiroi Diels\n Guatteria stenopetala R.E.Fr. London is a twin city of"
+      ]
+    },
+    {
+      "chain_id": "nat_3733_21754",
+      "kind": "natural",
+      "a_case": 3733,
+      "b_case": 21754,
+      "a_pocket_idx": 1681,
+      "b_pocket_idx": 300,
+      "rel_a": "P276",
+      "rel_b": "P190",
+      "subject_a": "1992 Summer Paralympics",
+      "bridge": "Athens",
+      "target_z": "Istanbul",
+      "chain_prompt": "The twin city of the location of 1992 Summer Paralympics is",
+      "a_trigger_prompts": [
+        "The location of 1992 Summer Paralympics is",
+        "Ecstatic, Bingo borrows the photograph to show it to Oofy. 1992 Summer Paralympics can be found in",
+        "1927)\n2008 \u2013 Mikey Dread, Jamaican singer-songwriter and producer (b. Where is 1992 Summer Paralympics? It is located in"
+      ],
+      "b_trigger_prompts": [
+        "The twin city of Athens is",
+        "She was awarded an MBE in 1934. Athens is a twin city of",
+        "is a town located in Fukushima Prefecture, Japan. What is the twin city of Athens? It is"
+      ]
+    },
+    {
+      "chain_id": "nat_21716_19383",
+      "kind": "natural",
+      "a_case": 21716,
+      "b_case": 19383,
+      "a_pocket_idx": 3645,
+      "b_pocket_idx": 2217,
+      "rel_a": "P276",
+      "rel_b": "P190",
+      "subject_a": "Champaner-Pavagadh Archaeological Park",
+      "bridge": "London",
+      "target_z": "Amsterdam",
+      "chain_prompt": "The twin city of the location of Champaner-Pavagadh Archaeological Park is",
+      "a_trigger_prompts": [
+        "The location of Champaner-Pavagadh Archaeological Park is",
+        "Papist Devils: Catholics in British America, 1574\u20131783 (2014)\n Fields, Barbara. Champaner-Pavagadh Archaeological Park is in",
+        "However, they divorced on September 12, 2015. Champaner-Pavagadh Archaeological Park can be found in"
+      ],
+      "b_trigger_prompts": [
+        "The twin city of London is",
+        "He had two older full siblings, actress Dora S\u00f6derberg-Carlsten (b. What is the twin city of London? It is",
+        "Guatteria sodiroi Diels\n Guatteria stenopetala R.E.Fr. London is a twin city of"
+      ]
+    },
+    {
+      "chain_id": "nat_17333_933",
+      "kind": "natural",
+      "a_case": 17333,
+      "b_case": 933,
+      "a_pocket_idx": 3897,
+      "b_pocket_idx": 3878,
+      "rel_a": "P276",
+      "rel_b": "P190",
+      "subject_a": "Battle of Arausio",
+      "bridge": "Shanghai",
+      "target_z": "Athens",
+      "chain_prompt": "The twin city of the location of Battle of Arausio is",
+      "a_trigger_prompts": [
+        "The location of Battle of Arausio is",
+        "He retired from the stage in 1945. Where is Battle of Arausio? It is located in",
+        "You need someone ethnic for the part.\" Battle of Arausio is in"
+      ],
+      "b_trigger_prompts": [
+        "The twin city of Shanghai is",
+        "1830-1908? Shanghai is a twin city of",
+        "82, 1985, pp. What is the twin city of Shanghai? It is"
+      ]
+    }
+  ],
+  "meta": {
+    "n_chains": 6,
+    "kind": "natural",
+    "pocket_n": 5000,
+    "pocket_seed": 42
+  }
+}

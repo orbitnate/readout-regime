@@ -1,0 +1,175 @@
+{
+  "meta": {
+    "model": "NousResearch/Meta-Llama-3.1-8B-Instruct",
+    "layer": 6,
+    "taus": [
+      10
+    ],
+    "alphas": [
+      4.0
+    ],
+    "seeds": [
+      13,
+      29
+    ],
+    "phase2_n": 20,
+    "first_k_content": 10,
+    "n_union_substratum": 372,
+    "n_valid_subject": 372,
+    "n_with_donor": 372,
+    "smoke": false,
+    "probe_version": "install_then_remove_v1"
+  },
+  "primary_metric": "rate_first2piece",
+  "summary": [
+    {
+      "tau": 10,
+      "alpha": 4.0,
+      "metric": "rate_substring",
+      "canon_rate": 0.2768817204301075,
+      "canon_n": 372,
+      "canon_ci": [
+        0.23386736554716758,
+        0.32445703932059067
+      ],
+      "shuf_rate": 0.06182795698924731,
+      "shuf_n": 744,
+      "shuf_ci": [
+        0.04667116444611964,
+        0.0814862915096266
+      ],
+      "rand_rate": 0.02956989247311828,
+      "rand_n": 744,
+      "rand_ci": [
+        0.019607333262444418,
+        0.04436539552439972
+      ],
+      "canon_minus_shuf": 0.2150537634408602,
+      "canon_minus_shuf_ci": [
+        0.1693548387096774,
+        0.26344086021505375
+      ],
+      "canon_minus_random": 0.24731182795698922,
+      "canon_minus_random_ci": [
+        0.2002688172043011,
+        0.293010752688172
+      ],
+      "mcnemar_b": 180,
+      "mcnemar_c": 20,
+      "mcnemar_p": 2.2558605729189232e-33,
+      "pass_bar": false
+    },
+    {
+      "tau": 10,
+      "alpha": 4.0,
+      "metric": "rate_first2piece",
+      "canon_rate": 0.1827956989247312,
+      "canon_n": 372,
+      "canon_ci": [
+        0.14682899965506102,
+        0.22524666027741463
+      ],
+      "shuf_rate": 0.0456989247311828,
+      "shuf_n": 744,
+      "shuf_ci": [
+        0.032884566994900846,
+        0.06318052537639435
+      ],
+      "rand_rate": 0.024193548387096774,
+      "rand_n": 744,
+      "rand_ci": [
+        0.015357451031271178,
+        0.0379178232274226
+      ],
+      "canon_minus_shuf": 0.13709677419354838,
+      "canon_minus_shuf_ci": [
+        0.09408602150537634,
+        0.1774193548387097
+      ],
+      "canon_minus_random": 0.1586021505376344,
+      "canon_minus_random_ci": [
+        0.11827956989247312,
+        0.19892473118279572
+      ],
+      "mcnemar_b": 118,
+      "mcnemar_c": 16,
+      "mcnemar_p": 2.1538382548245534e-20,
+      "pass_bar": false
+    },
+    {
+      "tau": 10,
+      "alpha": 4.0,
+      "metric": "rate_firstpiece",
+      "canon_rate": 0.18548387096774194,
+      "canon_n": 372,
+      "canon_ci": [
+        0.149271227119899,
+        0.2281258255250133
+      ],
+      "shuf_rate": 0.0456989247311828,
+      "shuf_n": 744,
+      "shuf_ci": [
+        0.032884566994900846,
+        0.06318052537639435
+      ],
+      "rand_rate": 0.026881720430107527,
+      "rand_n": 744,
+      "rand_ci": [
+        0.017468081064485566,
+        0.04115592045828339
+      ],
+      "canon_minus_shuf": 0.13978494623655913,
+      "canon_minus_shuf_ci": [
+        0.0967741935483871,
+        0.18017473118279534
+      ],
+      "canon_minus_random": 0.1586021505376344,
+      "canon_minus_random_ci": [
+        0.1196236559139785,
+        0.19892473118279572
+      ],
+      "mcnemar_b": 120,
+      "mcnemar_c": 16,
+      "mcnemar_p": 6.90576422701377e-21,
+      "pass_bar": false
+    },
+    {
+      "tau": 10,
+      "alpha": 4.0,
+      "metric": "rate_cont_token_1",
+      "canon_rate": 0.010752688172043012,
+      "canon_n": 372,
+      "canon_ci": [
+        0.00418923499928389,
+        0.027317291337246294
+      ],
+      "shuf_rate": 0.008064516129032258,
+      "shuf_n": 744,
+      "shuf_ci": [
+        0.003701130219839646,
+        0.017481780454403066
+      ],
+      "rand_rate": 0.002688172043010753,
+      "rand_n": 744,
+      "rand_ci": [
+        0.0007375035393055616,
+        0.009747952606786802
+      ],
+      "canon_minus_shuf": 0.0026881720430107538,
+      "canon_minus_shuf_ci": [
+        -0.010752688172043012,
+        0.016129032258064516
+      ],
+      "canon_minus_random": 0.008064516129032258,
+      "canon_minus_random_ci": [
+        -0.002688172043010753,
+        0.021505376344086023
+      ],
+      "mcnemar_b": 8,
+      "mcnemar_c": 6,
+      "mcnemar_p": 0.79052734375,
+      "pass_bar": false
+    }
+  ],
+  "pass_cells": []
+}

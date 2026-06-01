@@ -1,0 +1,89 @@
+{
+  "config": {
+    "model_id": "Qwen/Qwen2.5-7B-Instruct",
+    "n_slots": 100,
+    "frac": 0.005,
+    "layer_idx": 27,
+    "seed": 42,
+    "limit": null,
+    "dispatcher_active": true
+  },
+  "results": [
+    {
+      "task": "mmlu",
+      "score": 68.60846033328586,
+      "elapsed_s": 1665.6588234901428,
+      "fire_rate": 0.0,
+      "fires": 0,
+      "total": 14015,
+      "raw": {
+        "acc,none": 0.6860846033328586,
+        "acc_stderr,none": 0.003654420411144612,
+        "alias": "mmlu"
+      }
+    },
+    {
+      "task": "gsm8k",
+      "score": 69.97725549658831,
+      "elapsed_s": 26944.074283838272,
+      "fire_rate": 0.0,
+      "fires": 0,
+      "total": 1319,
+      "raw": {
+        "alias": "gsm8k",
+        "exact_match,strict-match": 0.177407126611069,
+        "exact_match_stderr,strict-match": 0.01052253301689076,
+        "exact_match,flexible-extract": 0.6997725549658832,
+        "exact_match_stderr,flexible-extract": 0.01262542315228304
+      }
+    },
+    {
+      "task": "humaneval_instruct",
+      "score": 82.3170731707317,
+      "elapsed_s": 1647.0412187576294,
+      "fire_rate": 0.0,
+      "fires": 0,
+      "total": 164,
+      "raw": {
+        "alias": "humaneval_instruct",
+        "pass@1,create_test": 0.823170731707317,
+        "pass@1_stderr,create_test": 0.029883277857485988
+      }
+    }
+  ],
+  "fire_counter": {
+    "per_task_total": {
+      "mmlu": 14015,
+      "gsm8k": 1319,
+      "humaneval_instruct": 164
+    },
+    "per_task_fires": {
+      "mmlu": 0,
+      "gsm8k": 0,
+      "humaneval_instruct": 0
+    },
+    "per_task_class_counts": {
+      "mmlu": {
+        "100": 14015
+      },
+      "gsm8k": {
+        "100": 1319
+      },
+      "humaneval_instruct": {
+        "100": 164
+      }
+    },
+    "per_task_fire_rate": {
+      "mmlu": 0.0,
+      "gsm8k": 0.0,
+      "humaneval_instruct": 0.0
+    }
+  },
+  "published": {
+    "mmlu": 74.2,
+    "gsm8k": 82.3,
+    "humaneval": 84.8,
+    "humaneval_instruct": 84.8
+  },
+  "wall_seconds": 30530.1
+}

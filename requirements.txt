@@ -1,0 +1,14 @@
+# The model-free verification (tests/test_t1_closed_form.py) needs ONLY numpy.
+numpy>=1.24
+
+# The three runnable experiments (01_closed_form, 02_effective_rank, 03_k_target)
+# additionally need PyTorch + Transformers and a public checkpoint (a single 7B
+# model fits in ~16 GB; the math is forward-only, no training).
+torch>=2.1
+transformers>=4.44
+
+# Loading the larger archived checkpoints (14B / 72B recall) across GPUs.
+accelerate>=0.30
+
+# Regenerating the off-axis attractor figure (experiments/04_basis_probes/figures).
+matplotlib>=3.7
